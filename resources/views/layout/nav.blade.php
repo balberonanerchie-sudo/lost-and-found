@@ -14,10 +14,10 @@
 
   <div class="sidebar-menu">
     <ul>
-      <li><a class="nav-link" href="{{ url('/') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
-      <li><a class="nav-link" href="{{ url('/manage-item') }}"><i class="far fa-folder-open"></i> Manage Item</a></li>
-      <li><a class="nav-link" href="{{ url('/manage-user') }}"><i class="fas fa-user-alt"></i> Manage User</a></li>
-      <li><a class="nav-link" href="{{ url('/check-appointment') }}"><i class="far fa-calendar-check"></i> Check Appointment</a>
+      <li><a class="nav-link" href="{{ route('Admin_Dashboard') }}"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
+      <li><a class="nav-link" href="{{ route('manageItem') }}"><i class="far fa-folder-open"></i> Manage Item</a></li>
+      <li><a class="nav-link" href="{{ route('manageUser') }}"><i class="fas fa-user-alt"></i> Manage User</a></li>
+      <li><a class="nav-link" href="{{ route('checkAppointment') }}"><i class="far fa-calendar-check"></i> Check Appointment</a>
       </li>
       <li><a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
     </ul>
