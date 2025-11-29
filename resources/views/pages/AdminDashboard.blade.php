@@ -9,30 +9,23 @@
 
 @section('content')
 
-<input type="checkbox" id="sidebar-toggle">
-
-
-
-
-
-<header>
-  <div class="menu-toggle">
-    <label for="sidebar-toggle"><i class="fas fa-bars"></i></label>
-  </div>
-
-  <div class="top-navbar d-flex align-items-center justify-content-between">
-    <div class="d-flex align-items-center">
-      <div class="search-bar me-3">
-        <input type="text" class="form-control form-control-sm" placeholder="Search...">
-
-      </div>
-      <i class="fas fa-bell me-3"></i>
-      <i class="fas fa-envelope me-3"></i>
-      <i class="fas fa-user-circle"></i>
+  <header>
+    <div class="menu-toggle">
+      <label for="sidebar-toggle"><i class="fas fa-bars"></i></label>
     </div>
-  </div>
-</header>
-<div class="main-content">
+  
+    <div class="top-navbar d-flex align-items-center justify-content-between">
+      <div class="d-flex align-items-center">
+        <div class="search-bar me-3">
+          <input type="text" class="form-control form-control-sm" placeholder="Search...">
+  
+        </div>
+        <i class="fas fa-bell me-3"></i>
+        <i class="fas fa-envelope me-3"></i>
+        <i class="fas fa-user-circle"></i>
+      </div>
+    </div>
+  </header>
 
   <div class="container py-3 mx-4">
     <div class="page-header">
@@ -183,5 +176,4 @@
       </div>
     </main>
   </div>
-</div>
 @endsection

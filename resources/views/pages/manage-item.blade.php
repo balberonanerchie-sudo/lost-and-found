@@ -1,46 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Manage Item Listings</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/manage-item.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
+@extends('layout.default')
 
-<body>
-  <input type="checkbox" id="sidebar-toggle">
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/manage-item.css') }}">
+@endsection
 
-  <div class="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-flex">
-        <i class="bi bi-compass"></i>
-    <span>weFind</span>
-      </div>
-    </div>
-
-    <div class="sidebar-user">
-      <i class="fas fa-user-circle fa-3x"></i>
-      <h3>Nerelie Balberona</h3>
-      <span>balberonanere@gmail.com</span>
-    </div>
-
-    <div class="sidebar-menu">
-      <ul>
-        <li><a class="nav-link" href="AdminDashboard.html"><i class="fas fa-tachometer-alt"></i>Dashboard</a></li>
-        <li><a class="nav-link" href="manage-item.html"><i class="far fa-folder-open"></i> Manage Item</a></li>
-        <li><a class="nav-link" href="manage-user.html"><i class="fas fa-user-alt"></i> Manage User</a></li>
-        <li><a class="nav-link" href="check-appointment.html"><i class="far fa-calendar-check"></i> Check Appointment</a></li>
-         <li><a class="nav-link" href="#"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
-      </ul>
-
-    </div>
-  </div>
-
-<div class="main-content">
+@section('content')
   <header>
     <div class="menu-toggle">
       <label for="sidebar-toggle"><i class="fas fa-bars"></i></label>
@@ -225,7 +189,4 @@
         </ul>
       </nav>
     </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+@endsection
