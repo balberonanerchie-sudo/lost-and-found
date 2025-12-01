@@ -1,21 +1,26 @@
-<header>
-    <div class="menu-toggle">
-        <button id="sidebar-toggle" class="btn btn-light"><i class="fas fa-bars"></i></button>
-    </div>
-    <div class="top-navbar d-flex align-items-center">
-        <i class="fas fa-bell"></i>
-        <i class="fas fa-envelope"></i>
-        <div class="dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-user-circle"></i>
-                <span>Nerelie Balberona</span>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                <li><a class="dropdown-item" href="#">Profile</a></li>
-                <li><a class="dropdown-item" href="#">Settings</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Logout</a></li>
-            </ul>
+<header class="top-navbar">
+    <div class="navbar-content">
+        <button class="menu-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <div class="navbar-actions">
+            <button class="nav-icon-btn">
+                <i class="fas fa-bell"></i>
+                <span class="badge"></span>
+            </button>
+
+            <button class="nav-icon-btn">
+                <i class="fas fa-envelope"></i>
+            </button>
+
+            <div class="user-profile">
+                <div class="user-avatar">AD</div>
+                <div class="user-info">
+                    <h6>Admin User</h6>
+                    <p>Administrator</p>
+                </div>
+            </div>
         </div>
     </div>
 </header>

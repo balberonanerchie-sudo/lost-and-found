@@ -7,10 +7,10 @@ use App\Http\Controllers\ManageItemController;
 use App\Http\Controllers\ManageUserController;
 use App\Http\Controllers\CheckAppointmentController;
 
-Route::get('/', [AdminDashboardController::class, 'index'])->name('adminDashboard');
+Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('adminDashboard');
 
 Route::get('/manage-item', [ManageItemController::class, 'index'])->name('manageItem');
 
 Route::get('/manage-user', [ManageUserController::class, 'index'])->name('manageUser');
 
-Route::get('/check-appointment', [CheckAppointmentController::class, 'index'])->name('checkAppointment');
+Route::get('/appointments', [CheckAppointmentController::class, 'index'])->name('checkAppointment');
