@@ -23,7 +23,7 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <a href="/dashboard" class="brand-content">
+            <a href="/" class="brand-content">
                 <div class="brand-logo">
                     <img src="{{ asset('img/logo.png') }}" alt="Lost & Found Logo">
                 </div>
@@ -37,7 +37,7 @@
         <nav class="sidebar-menu">
             <ul>
                 <li>
-                    <a href="/dashboard" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
+                    <a href="/" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
                         <i class="fas fa-th-large"></i>
                         <span>Dashboard</span>
                     </a>
