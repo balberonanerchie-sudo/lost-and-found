@@ -7,189 +7,349 @@
 @section('content')
     @include('partials.navbar')
 
-    <div class="container-fluid py-4">
+    <main class="main-content">
         <div class="page-header">
-            <h3 class="fw-bold">Manage Item</h3>
-            <div class="text-end mb-1">
-                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#newItemModal"><i class="bi bi-plus-circle me-2"></i>Add Item</button>
+            <div>
+                <h3>Manage Items</h3>
+                <p>Track and manage all lost and found items in the system</p>
             </div>
+            <button class="btn-primary" data-bs-toggle="modal" data-bs-target="#addItemModal">
+                <i class="fas fa-plus"></i>
+                Add New Item
+            </button>
         </div>
 
-         <div class="card p-4 mb-4">
-            <div class="row g-3">
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <label class="form-label">Search Item</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-search"></i></span>
-                        <input type="text" class="form-control" placeholder="Enter name or ID...">
+        <!-- Filter Section -->
+        <div class="filter-section">
+            <div class="filter-group">
+                <label>Status</label>
+                <select class="filter-select">
+                    <option value="">All Status</option>
+                    <option value="unclaimed">Unclaimed</option>
+                    <option value="claimed">Claimed</option>
+                    <option value="pending">Pending</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Category</label>
+                <select class="filter-select">
+                    <option value="">All Categories</option>
+                    <option value="electronics">Electronics</option>
+                    <option value="accessories">Accessories</option>
+                    <option value="documents">Documents</option>
+                    <option value="clothing">Clothing</option>
+                    <option value="others">Others</option>
+                </select>
+            </div>
+
+            <div class="filter-group">
+                <label>Location</label>
+                <select class="filter-select">
+                    <option value="">All Locations</option>
+                    <option value="library">Library</option>
+                    <option value="cafeteria">Cafeteria</option>
+                    <option value="gate">Gate Area</option>
+                    <option value="classroom">Classroom</option>
+                </select>
+            </div>
+
+            <button class="btn-reset">
+                <i class="fas fa-redo"></i>
+                Reset Filters
+            </button>
+        </div>
+
+        <!-- Items Table -->
+        <div class="table-card">
+            <div class="table-header">
+                <h5>All Items (248)</h5>
+                <div class="table-actions">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search items...">
                     </div>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-12">
-                    <label class="form-label">Category</label>
-                    <select class="form-select">
-                        <option>All</option>
-                        <option>Lost</option>
-                        <option>Found</option>
-                        <option>Returned</option>
-                    </select>
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-12">
-                    <label class="form-label">Status</label>
-                    <select class="form-select">
-                        <option>All Status</option>
-                        <option>Pending</option>
-                        <option>Claimed</option>
-                        <option>Unclaimed</option>
-                    </select>
-                </div>
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <label class="form-label">Date</label>
-                    <input type="date" class="form-control">
-                </div>
-                <div class="col-lg-2 col-md-6 col-sm-12 d-flex align-items-end">
-                    <button class="btn btn-outline-success w-100"><i class="fas fa-filter me-1"></i> Filter</button>
+                    <button class="btn-export">
+                        <i class="fas fa-download"></i>
+                        Export
+                    </button>
                 </div>
             </div>
-        </div>
+            <div class="table-responsive">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Item Image</th>
+                            <th>Item Name</th>
+                            <th>Category</th>
+                            <th>Location</th>
+                            <th>Date Reported</th>
+                            <th>Status</th>
+                            <th>Owner</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Item Image">
+                                <div class="item-image">
+                                    <img src="{{ asset('img/items/wallet.jpg') }}" alt="Wallet">
+                                </div>
+                            </td>
+                            <td data-label="Item Name">
+                                <div class="item-info">
+                                    <strong>Black Wallet</strong>
+                                    <span class="item-desc">Leather wallet with cards</span>
+                                </div>
+                            </td>
+                            <td data-label="Category">Accessories</td>
+                            <td data-label="Location">
+                                <div class="location-tag">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Library
+                                </div>
+                            </td>
+                            <td data-label="Date Reported">Oct 10, 2025</td>
+                            <td data-label="Status"><span class="badge warning">Unclaimed</span></td>
+                            <td data-label="Owner">-</td>
+                            <td data-label="Actions">
+                                <div class="action-btns">
+                                    <button class="btn-sm btn-claim" title="Mark as Claimed">
+                                        <i class="fas fa-check"></i>
+                                        <span>Claimed</span>
+                                    </button>
+                                    <button class="btn-sm btn-info" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-sm btn-success" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-sm btn-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td data-label="Item Image">
+                                <div class="item-image">
+                                    <img src="{{ asset('img/items/umbrella.jpg') }}" alt="Umbrella">
+                                </div>
+                            </td>
+                            <td data-label="Item Name">
+                                <div class="item-info">
+                                    <strong>Blue Umbrella</strong>
+                                    <span class="item-desc">Foldable umbrella</span>
+                                </div>
+                            </td>
+                            <td data-label="Category">Others</td>
+                            <td data-label="Location">
+                                <div class="location-tag">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Gate 3
+                                </div>
+                            </td>
+                            <td data-label="Date Reported">Oct 12, 2025</td>
+                            <td data-label="Status"><span class="badge success">Claimed</span></td>
+                            <td data-label="Owner">John Doe</td>
+                            <td data-label="Actions">
+                                <div class="action-btns">
+                                    <button class="btn-sm btn-info" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-sm btn-success" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-sm btn-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td data-label="Item Image">
+                                <div class="item-image">
+                                    <img src="{{ asset('img/items/phone.jpg') }}" alt="Phone">
+                                </div>
+                            </td>
+                            <td data-label="Item Name">
+                                <div class="item-info">
+                                    <strong>iPhone 13</strong>
+                                    <span class="item-desc">Black iPhone with case</span>
+                                </div>
+                            </td>
+                            <td data-label="Category">Electronics</td>
+                            <td data-label="Location">
+                                <div class="location-tag">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Cafeteria
+                                </div>
+                            </td>
+                            <td data-label="Date Reported">Oct 15, 2025</td>
+                            <td data-label="Status"><span class="badge info">Pending Claim</span></td>
+                            <td data-label="Owner">Maria Cruz</td>
+                            <td data-label="Actions">
+                                <div class="action-btns">
+                                    <button class="btn-sm btn-claim" title="Mark as Claimed">
+                                        <i class="fas fa-check"></i>
+                                        <span>Claimed</span>
+                                    </button>
+                                    <button class="btn-sm btn-info" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-sm btn-success" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-sm btn-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td data-label="Item Image">
+                                <div class="item-image">
+                                    <img src="{{ asset('img/items/id.jpg') }}" alt="ID">
+                                </div>
+                            </td>
+                            <td data-label="Item Name">
+                                <div class="item-info">
+                                    <strong>Student ID</strong>
+                                    <span class="item-desc">DNSC ID Card - 2023-0123</span>
+                                </div>
+                            </td>
+                            <td data-label="Category">Documents</td>
+                            <td data-label="Location">
+                                <div class="location-tag">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Room 301
+                                </div>
+                            </td>
+                            <td data-label="Date Reported">Oct 18, 2025</td>
+                            <td data-label="Status"><span class="badge warning">Unclaimed</span></td>
+                            <td data-label="Owner">-</td>
+                            <td data-label="Actions">
+                                <div class="action-btns">
+                                    <button class="btn-sm btn-claim" title="Mark as Claimed">
+                                        <i class="fas fa-check"></i>
+                                        <span>Claimed</span>
+                                    </button>
+                                    <button class="btn-sm btn-info" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-sm btn-success" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-sm btn-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td data-label="Item Image">
+                                <div class="item-image">
+                                    <img src="{{ asset('img/items/bag.jpg') }}" alt="Bag">
+                                </div>
+                            </td>
+                            <td data-label="Item Name">
+                                <div class="item-info">
+                                    <strong>Black Backpack</strong>
+                                    <span class="item-desc">Nike backpack with laptop</span>
+                                </div>
+                            </td>
+                            <td data-label="Category">Accessories</td>
+                            <td data-label="Location">
+                                <div class="location-tag">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Gym
+                                </div>
+                            </td>
+                            <td data-label="Date Reported">Oct 20, 2025</td>
+                            <td data-label="Status"><span class="badge warning">Unclaimed</span></td>
+                            <td data-label="Owner">-</td>
+                            <td data-label="Actions">
+                                <div class="action-btns">
+                                    <button class="btn-sm btn-claim" title="Mark as Claimed">
+                                        <i class="fas fa-check"></i>
+                                        <span>Claimed</span>
+                                    </button>
+                                    <button class="btn-sm btn-info" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-sm btn-success" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-sm btn-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead>
-                            <tr>
-                                <th>Item Image</th>
-                                <th>Item Name</th>
-                                <th>Location</th>
-                                <th>Date Reported</th>
-                                <th>Status</th>
-                                <th>Owner</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><img src="Image/wallet.jpg" class="rounded" alt="" width="60"></td>
-                                <td>Black Wallet</td>
-                                <td>Library</td>
-                                <td>Oct 10, 2025</td>
-                                <td><span class="badge bg-warning text-dark">Unclaimed</span></td>
-                                <td></td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editItemModal"><i class="fas fa-edit"></i> Edit</button>
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteItemModal"><i class="fas fa-trash"></i> Delete</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><img src="Image/umbrella.jpg" class="rounded" alt="" width="60"></td>
-                                <td>Umbrella</td>
-                                <td>Gate 3</td>
-                                <td>Oct 12, 2025</td>
-                                <td><span class="badge bg-success">Claimed</span></td>
-                                <td>John Doe</td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary me-2" data-bs-toggle="modal" data-bs-target="#editItemModal"><i class="fas fa-edit"></i> Edit</button>
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs
-                                    
-                                    
-                                    -target="#deleteItemModal"><i class="fas fa-trash"></i> Delete</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- Pagination -->
+            <div class="table-footer">
+                <div class="showing-info">
+                    Showing 1 to 5 of 248 items
+                </div>
+                <div class="pagination">
+                    <button class="page-btn" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="page-btn active">1</button>
+                    <button class="page-btn">2</button>
+                    <button class="page-btn">3</button>
+                    <span class="page-dots">...</span>
+                    <button class="page-btn">50</button>
+                    <button class="page-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
+@endsection
 
-    <!-- New Item Modal -->
-    <div class="modal fade" id="newItemModal" tabindex="-1" aria-labelledby="newItemModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="newItemModalLabel">New Item</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="itemName" class="form-label">Item Name</label>
-                            <input type="text" class="form-control" id="itemName">
-                        </div>
-                        <div class="mb-3">
-                            <label for="itemLocation" class="form-label">Location Found</label>
-                            <input type="text" class="form-control" id="itemLocation">
-                        </div>
-                        <div class="mb-3">
-                            <label for="itemDate" class="form-label">Date Found</label>
-                            <input type="date" class="form-control" id="itemDate">
-                        </div>
-                        <div class="mb-3">
-                            <label for="itemImage" class="form-label">Item Image</label>
-                            <input type="file" class="form-control" id="itemImage">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save Item</button>
-                </div>
-            </div>
-        </div>
-    </div>
+@section('scripts')
+    <script>
+        // Filter functionality
+        document.querySelectorAll('.filter-select').forEach(select => {
+            select.addEventListener('change', function () {
+                console.log('Filter changed:', this.value);
+                // Add your filter logic here
+            });
+        });
 
-    <!-- Edit Item Modal -->
-    <div class="modal fade" id="editItemModal" tabindex="-1" aria-labelledby="editItemModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editItemModalLabel">Edit Item</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="editItemName" class="form-label">Item Name</label>
-                            <input type="text" class="form-control" id="editItemName" value="Black Wallet">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editItemLocation" class="form-label">Location Found</label>
-                            <input type="text" class="form-control" id="editItemLocation" value="Library">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editItemDate" class="form-label">Date Found</label>
-                            <input type="date" class="form-control" id="editItemDate" value="2025-10-10">
-                        </div>
-                        <div class="mb-3">
-                            <label for="editItemImage" class="form-label">Item Image</label>
-                            <input type="file" class="form-control" id="editItemImage">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save Changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
+        // Reset filters
+        document.querySelector('.btn-reset').addEventListener('click', function () {
+            document.querySelectorAll('.filter-select').forEach(select => {
+                select.value = '';
+            });
+        });
 
-    <!-- Delete Item Modal -->
-    <div class="modal fade" id="deleteItemModal" tabindex="-1" aria-labelledby="deleteItemModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="deleteItemModalLabel">Delete Item</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Are you sure you want to delete this item? This action cannot be undone.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete Item</button>
-                </div>
-            </div>
-        </div>
-    </div>
+        // Claimed button functionality
+        document.querySelectorAll('.btn-claim').forEach(btn => {
+            btn.addEventListener('click', function () {
+                if (confirm('Mark this item as claimed?')) {
+                    // Add your claim logic here
+                    console.log('Item claimed');
+                }
+            });
+        });
+
+        // Search functionality
+        document.querySelector('.search-box input').addEventListener('input', function () {
+            console.log('Searching:', this.value);
+            // Add your search logic here
+        });
+
+        // Export functionality
+        document.querySelector('.btn-export').addEventListener('click', function () {
+            console.log('Exporting data...');
+            // Add your export logic here
+        });
+    </script>
 @endsection

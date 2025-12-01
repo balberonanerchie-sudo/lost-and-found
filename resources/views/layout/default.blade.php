@@ -2,44 +2,130 @@
 <html lang="en">
 
 <head>
-    <title>Admin Dashboard - Lost and Found</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ $title ?? 'Lost & Found System' }}</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+
     @yield('styles')
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
 </head>
 
 <body>
-    @include('layout.nav')
-    <div class="main-content">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <a href="/dashboard" class="brand-content">
+                <div class="brand-logo">
+                    <img src="{{ asset('img/logo.png') }}" alt="Lost & Found Logo">
+                </div>
+                <div class="brand-text">
+                    <h4>WeFind!</h4>
+                    <p>School System</p>
+                </div>
+            </a>
+        </div>
+
+        <nav class="sidebar-menu">
+            <ul>
+                <li>
+                    <a href="/dashboard" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
+                        <i class="fas fa-th-large"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/manage-item" class="nav-link {{ request()->is('manage-item') ? 'active' : '' }}">
+                        <i class="fas fa-box"></i>
+                        <span>Manage Items</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/manage-user" class="nav-link {{ request()->is('manage-user') ? 'active' : '' }}">
+                        <i class="fas fa-users"></i>
+                        <span>Manage Users</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/appointments" class="nav-link {{ request()->is('appointments') ? 'active' : '' }}">
+                        <i class="fas fa-calendar-check"></i>
+                        <span>Appointments</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Sidebar Overlay (Mobile) -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper" id="mainWrapper">
         @yield('content')
     </div>
 
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- jQuery (if needed) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <!-- Custom JS -->
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const navLinks = document.querySelectorAll('.nav-link');
-            const currentUrl = window.location.href;
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainWrapper = document.getElementById('mainWrapper');
+            const overlay = document.getElementById('sidebarOverlay');
 
-            navLinks.forEach(link => {
-                if (link.href === currentUrl) {
-                    link.classList.add('active');
-                }
-            });
+            sidebar.classList.toggle('active');
+            sidebar.classList.toggle('collapsed');
+            mainWrapper.classList.toggle('expanded');
 
-            const sidebarToggle = document.getElementById('sidebar-toggle');
-            if (sidebarToggle) {
-                sidebarToggle.addEventListener('click', function() {
-                    document.body.classList.toggle('sidebar-hidden');
-                });
+            // Only toggle overlay on mobile
+            if (window.innerWidth <= 992) {
+                overlay.classList.toggle('active');
             }
+        }
+
+        // Close sidebar when clicking overlay
+        document.getElementById('sidebarOverlay').addEventListener('click', function () {
+            toggleSidebar();
         });
+
+        // Handle responsive behavior
+        function handleResize() {
+            const sidebar = document.getElementById('sidebar');
+            const mainWrapper = document.getElementById('mainWrapper');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            if (window.innerWidth > 992) {
+                // Desktop: sidebar visible, no overlay
+                sidebar.classList.remove('active', 'collapsed');
+                mainWrapper.classList.remove('expanded');
+                overlay.classList.remove('active');
+            } else {
+                // Mobile: sidebar hidden
+                sidebar.classList.add('collapsed');
+                sidebar.classList.remove('active');
+                mainWrapper.classList.add('expanded');
+                overlay.classList.remove('active');
+            }
+        }
+
+        window.addEventListener('resize', handleResize);
+        handleResize(); // Initial check
     </script>
+
     @yield('scripts')
 </body>
+
 </html>
