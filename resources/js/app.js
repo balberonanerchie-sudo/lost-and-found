@@ -1,10 +1,14 @@
 // resources/js/app.js
-import "./bootstrap"; // Or other imports you might have
-import { createApp } from "vue";
+import './bootstrap';
+import { createApp } from 'vue';
+
+// 1. Import the component
+import CalendarWidget from './components/CalendarWidget.vue';
 
 const app = createApp({});
 
-// Register any global components here if needed
-// app.component('example-component', require('./components/ExampleComponent.vue').default);
+// 2. Register it globally
+app.component('calendar-widget', CalendarWidget);
 
-app.mount("#app"); // Mount the Vue app to an element with id="app"
+// 3. Mount the app (make sure this matches the ID in your layout)
+app.mount('#app');

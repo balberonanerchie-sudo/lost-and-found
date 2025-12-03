@@ -1,0 +1,280 @@
+ :root {
+            /* --- COLOR PALETTE (Forest Green Theme) --- */
+            --brand-primary: #217336;       /* Main Green */
+            --brand-dark: #144420;          /* Darker Green for gradients */
+            --brand-light: #4caf50;         /* Lighter Green for accents */
+            --brand-gradient: linear-gradient(135deg, #217336 0%, #0d3012 100%);
+            
+            --text-dark: #333333;
+            --text-muted: #888888;
+            --input-border: #d9d9d9;
+            --input-focus: #217336;
+            
+            --bg-body: #e8f5e9; 
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-body);
+            background-image: 
+                radial-gradient(circle at 10% 10%, rgba(33, 115, 54, 0.1) 0%, transparent 20%),
+                radial-gradient(circle at 90% 90%, rgba(33, 115, 54, 0.1) 0%, transparent 20%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* --- MAIN CARD CONTAINER --- */
+        .split-card {
+            display: flex;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden; 
+            width: 100%;
+            max-width: 950px;
+            min-height: 600px;
+            position: relative;
+        }
+
+        /* --- LEFT SIDE (Graphic / Hero) --- */
+        .card-left {
+            flex: 1;
+            background: var(--brand-gradient);
+            color: white;
+            padding: 40px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.5s ease;
+        }
+
+        /* DECORATIVE SHAPES */
+        .shape-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            z-index: -1;
+        }
+        .c1 { width: 300px; height: 300px; top: -100px; left: -50px; }
+        .c2 { width: 200px; height: 200px; bottom: -50px; right: -50px; }
+        .c3 { width: 100px; height: 100px; top: 40%; right: 10%; background: rgba(255, 255, 255, 0.1); }
+        
+        .shape-dots {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-image: radial-gradient(rgba(255,255,255,0.2) 1px, transparent 1px);
+            background-size: 10px 10px;
+            bottom: 20px;
+            right: 80px;
+            z-index: -1;
+        }
+
+        .hero-content {
+            margin-top: auto;
+            margin-bottom: auto;
+            position: relative;
+        }
+        
+        .hero-title {
+            font-family: 'Poppins', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 15px;
+            animation: fadeInText 0.5s ease;
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        /* --- RIGHT SIDE (Form) --- */
+        .card-right {
+            flex: 1; 
+            background: white;
+            padding: 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Tabs styling */
+        .auth-toggle-group {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .btn-toggle-main {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid transparent;
+            background: #f5f5f5;
+            color: var(--text-muted);
+            font-weight: 600;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-toggle-main.active {
+            background: var(--brand-primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(33, 115, 54, 0.3);
+        }
+
+        .btn-toggle-main:not(.active):hover {
+            background: #e0e0e0;
+            color: var(--text-dark);
+        }
+
+        /* Input Styling */
+        .form-control {
+            border: 2px solid var(--input-border);
+            border-radius: 8px;
+            padding: 12px 15px;
+            font-size: 0.95rem;
+            transition: 0.3s;
+            background-color: #fcfcfc;
+        }
+
+        .form-control:focus {
+            border-color: var(--brand-primary);
+            box-shadow: none; 
+            background-color: #fff;
+        }
+
+        .form-label-custom {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        /* Main Action Button */
+        .btn-action {
+            background: var(--brand-primary);
+            color: white;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 8px;
+            width: 100%;
+            border: none;
+            margin-top: 5px; /* Reduced slightly to fit checkbox */
+            transition: 0.3s;
+        }
+        
+        .btn-action:hover {
+            background: var(--brand-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(33, 115, 54, 0.2);
+        }
+
+        /* User/Admin Mini Toggle */
+        .role-switch {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 25px;
+            background: #f0f0f0;
+            border-radius: 20px;
+            padding: 3px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+            transition: all 0.3s ease;
+        }
+        
+        .role-option {
+            padding: 5px 20px;
+            border-radius: 18px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        
+        .role-option.active {
+            background: white;
+            color: var(--brand-primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        /* Social Icons Area */
+        .social-area {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding-top: 20px;
+        }
+        .social-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+        }
+        .social-icon {
+            color: var(--text-muted);
+            transition: 0.3s;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        .social-icon:hover { color: var(--brand-primary); }
+
+        /* Checkbox Link Styling */
+        .terms-link {
+            color: var(--brand-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+        .terms-link:hover {
+            color: var(--brand-dark);
+            text-decoration: underline;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .split-card {
+                flex-direction: column;
+                min-height: auto;
+                max-width: 450px;
+            }
+            .card-left {
+                padding: 30px;
+                min-height: 200px;
+            }
+            .hero-title { font-size: 2rem; }
+            .card-right { padding: 30px; }
+            .c1, .c2, .c3 { opacity: 0.3; }
+        }
+        
+        /* Fade Animation for form switching */
+        .form-wrapper {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        .form-wrapper.active { display: block; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }

@@ -384,6 +384,11 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="card-body">
+            <calendar-widget></calendar-widget>
+        </div>
+
         <div class="table-footer">
             <div class="showing-info">
                 Showing 1 to 2 of 98 approved appointments
