@@ -385,10 +385,6 @@
             </table>
         </div>
 
-        <div class="card-body">
-            <calendar-widget></calendar-widget>
-        </div>
-
         <div class="table-footer">
             <div class="showing-info">
                 Showing 1 to 2 of 98 approved appointments
@@ -407,56 +403,66 @@
                 </button>
             </div>
         </div>
+
+         <div class="card-body">
+            <calendar-widget></calendar-widget>
+        </div>
     </div>
 </main>
 @endsection
 
 @section('scripts')
 <script>
-    // Tab switching
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
+    // We use 'document.addEventListener' (Event Delegation) so clicks work 
+    // even after Vue replaces the HTML elements.
+
+    document.addEventListener('click', function(e) {
+        
+        // --- 1. Tab Switching Logic ---
+        const tabBtn = e.target.closest('.tab-btn');
+        if (tabBtn) {
             // Remove active class from all tabs and contents
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
             // Add active class to clicked tab
-            this.classList.add('active');
+            tabBtn.classList.add('active');
 
             // Show corresponding content
-            const tabId = this.getAttribute('data-tab');
-            document.getElementById(tabId).classList.add('active');
-        });
-    });
+            const tabId = tabBtn.getAttribute('data-tab');
+            const content = document.getElementById(tabId);
+            if (content) {
+                content.classList.add('active');
+            }
+            return; // Stop processing other checks
+        }
 
-    // Approve button
-    document.querySelectorAll('.btn-approve').forEach(btn => {
-        btn.addEventListener('click', function() {
-            if(confirm('Approve this appointment?')) {
+        // --- 2. Approve Button Logic ---
+        if (e.target.closest('.btn-approve')) {
+            if (confirm('Approve this appointment?')) {
                 console.log('Appointment approved');
                 // Add your approval logic here
             }
-        });
-    });
+            return;
+        }
 
-    // Reject button
-    document.querySelectorAll('.btn-reject').forEach(btn => {
-        btn.addEventListener('click', function() {
-            if(confirm('Reject this appointment?')) {
+        // --- 3. Reject Button Logic ---
+        if (e.target.closest('.btn-reject')) {
+            if (confirm('Reject this appointment?')) {
                 console.log('Appointment rejected');
                 // Add your rejection logic here
             }
-        });
-    });
+            return;
+        }
 
-    // Complete button
-    document.querySelectorAll('.btn-complete').forEach(btn => {
-        btn.addEventListener('click', function() {
-            if(confirm('Mark this appointment as complete?')) {
+        // --- 4. Complete Button Logic ---
+        if (e.target.closest('.btn-complete')) {
+            if (confirm('Mark this appointment as complete?')) {
                 console.log('Appointment completed');
                 // Add your completion logic here
             }
-        });
+            return;
+        }
     });
 </script>
 @endsection

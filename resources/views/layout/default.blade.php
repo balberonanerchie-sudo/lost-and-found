@@ -15,7 +15,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @yield('styles')
 </head>
 
@@ -67,10 +67,10 @@
     <!-- Sidebar Overlay (Mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Main Wrapper -->
     <div class="main-wrapper" id="mainWrapper">
-        @yield('content')
+    <div id="app"> @yield('content')
     </div>
+</div>
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
