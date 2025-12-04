@@ -15,7 +15,8 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @yield('styles')
 </head>
 
@@ -25,7 +26,7 @@
         <div class="sidebar-brand">
             <a href="/" class="brand-content">
                 <div class="brand-logo">
-                    <img src="{{ asset('img/logo.png') }}" alt="Lost & Found Logo">
+                    <img src="{{ asset('img/logo1.png') }}" alt="Lost & Found Logo">
                 </div>
                 <div class="brand-text">
                     <h4>WeFind!</h4>
@@ -37,7 +38,7 @@
         <nav class="sidebar-menu">
             <ul>
                 <li>
-                    <a href="/" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
+                    <a href="/admin-dashboard" class="nav-link {{ request()->is('admin-dashboard') ? 'active' : '' }}">
                         <i class="fas fa-th-large"></i>
                         <span>Dashboard</span>
                     </a>

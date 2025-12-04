@@ -78,18 +78,22 @@
     </div>
 
     <!-- Tabs -->
-    <div class="tabs-container">
-        <div class="tabs">
-            <button class="tab-btn active" data-tab="pending">
-                <i class="fas fa-clock"></i>
-                Pending Appointments (24)
-            </button>
-            <button class="tab-btn" data-tab="approved">
-                <i class="fas fa-check-circle"></i>
-                Approved Appointments (98)
-            </button>
-        </div>
+  <div class="tabs-container">
+    <div class="tabs">
+        <button class="tab-btn active" data-tab="pending">
+            <i class="fas fa-clock"></i>
+            Pending Appointments (24)
+        </button>
+        <button class="tab-btn" data-tab="approved">
+            <i class="fas fa-check-circle"></i>
+            Approved Appointments (98)
+        </button>
+        <button class="tab-btn" data-tab="calendar">
+            <i class="fas fa-calendar-alt"></i>
+            Calendar
+        </button>
     </div>
+</div>
 
     <!-- Pending Appointments Table -->
     <div class="table-card tab-content active" id="pending">
@@ -380,7 +384,7 @@
                                 </button>
                             </div>
                         </td>
-                    </tr>
+                   </tr>
                 </tbody>
             </table>
         </div>
@@ -403,65 +407,45 @@
                 </button>
             </div>
         </div>
-
-         <div class="card-body">
+    </div> <div class="table-card tab-content" id="calendar">
+        <div class="table-header">
+            <h5>Appointment Calendar</h5>
+        </div>
+        <div class="card-body p-4">
             <calendar-widget></calendar-widget>
         </div>
     </div>
+
+</div> 
 </main>
 @endsection
 
 @section('scripts')
 <script>
-    // We use 'document.addEventListener' (Event Delegation) so clicks work 
-    // even after Vue replaces the HTML elements.
-
     document.addEventListener('click', function(e) {
-        
-        // --- 1. Tab Switching Logic ---
+        // Tab Switching Logic
         const tabBtn = e.target.closest('.tab-btn');
         if (tabBtn) {
-            // Remove active class from all tabs and contents
+            // 1. Deactivate all tabs and content
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
-            // Add active class to clicked tab
+            // 2. Activate clicked tab
             tabBtn.classList.add('active');
 
-            // Show corresponding content
+            // 3. Show corresponding content
             const tabId = tabBtn.getAttribute('data-tab');
             const content = document.getElementById(tabId);
             if (content) {
                 content.classList.add('active');
+                
+                // --- FIX: Force Resize for Calendar ---
+                if (tabId === 'calendar') {
+                    setTimeout(() => {
+                        window.dispatchEvent(new Event('resize'));
+                    }, 200); // Small delay to ensure the tab is visible first
+                }
             }
-            return; // Stop processing other checks
-        }
-
-        // --- 2. Approve Button Logic ---
-        if (e.target.closest('.btn-approve')) {
-            if (confirm('Approve this appointment?')) {
-                console.log('Appointment approved');
-                // Add your approval logic here
-            }
-            return;
-        }
-
-        // --- 3. Reject Button Logic ---
-        if (e.target.closest('.btn-reject')) {
-            if (confirm('Reject this appointment?')) {
-                console.log('Appointment rejected');
-                // Add your rejection logic here
-            }
-            return;
-        }
-
-        // --- 4. Complete Button Logic ---
-        if (e.target.closest('.btn-complete')) {
-            if (confirm('Mark this appointment as complete?')) {
-                console.log('Appointment completed');
-                // Add your completion logic here
-            }
-            return;
         }
     });
 </script>
