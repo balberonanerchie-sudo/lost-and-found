@@ -26,6 +26,35 @@
                     <span>12% from last month</span>
                 </div>
             </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Claimed Items</span>
+                    <div class="stat-icon blue">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                </div>
+                <div class="stat-value">182</div>
+                <div class="stat-change positive">
+                    <i class="fas fa-arrow-up"></i>
+                    <span>8% from last month</span>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-header">
+                    <span class="stat-title">Pending Claims</span>
+                    <div class="stat-icon yellow">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                </div>
+                <div class="stat-value">66</div>
+                <div class="stat-change negative">
+                    <i class="fas fa-arrow-down"></i>
+                    <span>3% from last month</span>
+                </div>
+            </div>
+
             <div class="stat-card">
                 <div class="stat-header">
                     <span class="stat-title">Active Users</span>
@@ -41,20 +70,16 @@
             </div>
         </div>
 
-        <div class="charts-grid" style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 1.5rem;">
+        <div class="graph-section" style="margin-top: 2rem; margin-bottom: 2rem;">
             <leads-chart-card 
-                total-leads="248" 
+                total-reports="248" 
                 :percentage-change="12" 
-                money-spent="$0" 
-                conversion-rate="85%" 
-            ></leads-chart-card>
-            
-            </div>
+                lost-count="150" 
+                found-count="98">
+            </leads-chart-card>
+        </div>
 
-        <div class="table-card">
-            </div>
-
-        <div class="table-card">
-            </div>
+       
+        </div>
     </main>
 @endsection

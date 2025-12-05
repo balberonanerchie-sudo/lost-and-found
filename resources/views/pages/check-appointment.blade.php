@@ -19,7 +19,6 @@
         </button>
     </div>
 
-    <!-- Stats Overview -->
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-header">
@@ -77,25 +76,25 @@
         </div>
     </div>
 
-    <!-- Tabs -->
-  <div class="tabs-container">
-    <div class="tabs">
-        <button class="tab-btn active" data-tab="pending">
-            <i class="fas fa-clock"></i>
-            Pending Appointments (24)
-        </button>
-        <button class="tab-btn" data-tab="approved">
-            <i class="fas fa-check-circle"></i>
-            Approved Appointments (98)
-        </button>
-        <button class="tab-btn" data-tab="calendar">
-            <i class="fas fa-calendar-alt"></i>
-            Calendar
-        </button>
+    <div class="tabs-container">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="pending">
+                <i class="fas fa-clock"></i>
+                Pending
+                <span class="badge bg-warning text-dark ms-2 rounded-pill">24</span>
+            </button>
+            <button class="tab-btn" data-tab="approved">
+                <i class="fas fa-check-circle"></i>
+                Approved
+                <span class="badge bg-success text-white ms-2 rounded-pill">98</span>
+            </button>
+            <button class="tab-btn" data-tab="calendar">
+                <i class="fas fa-calendar-alt"></i>
+                Calendar
+            </button>
+        </div>
     </div>
-</div>
 
-    <!-- Pending Appointments Table -->
     <div class="table-card tab-content active" id="pending">
         <div class="table-header">
             <h5>Pending Appointments</h5>
@@ -150,17 +149,9 @@
                         <td data-label="Status"><span class="badge warning">Pending</span></td>
                         <td data-label="Actions">
                             <div class="action-btns">
-                                <button class="btn-sm btn-approve" title="Approve">
-                                    <i class="fas fa-check"></i>
-                                    <span>Approve</span>
-                                </button>
-                                <button class="btn-sm btn-reject" title="Reject">
-                                    <i class="fas fa-times"></i>
-                                    <span>Reject</span>
-                                </button>
-                                <button class="btn-sm btn-info" title="View Details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
+                                <button class="btn-sm btn-approve" title="Approve"><i class="fas fa-check"></i></button>
+                                <button class="btn-sm btn-reject" title="Reject"><i class="fas fa-times"></i></button>
+                                <button class="btn-sm btn-info" title="View Details"><i class="fas fa-eye"></i></button>
                             </div>
                         </td>
                     </tr>
@@ -193,85 +184,17 @@
                         <td data-label="Status"><span class="badge warning">Pending</span></td>
                         <td data-label="Actions">
                             <div class="action-btns">
-                                <button class="btn-sm btn-approve" title="Approve">
-                                    <i class="fas fa-check"></i>
-                                    <span>Approve</span>
-                                </button>
-                                <button class="btn-sm btn-reject" title="Reject">
-                                    <i class="fas fa-times"></i>
-                                    <span>Reject</span>
-                                </button>
-                                <button class="btn-sm btn-info" title="View Details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td data-label="User">
-                            <div class="user-cell">
-                                <div class="user-avatar">JL</div>
-                                <div class="user-info">
-                                    <strong>Jennifer Lee</strong>
-                                </div>
-                            </div>
-                        </td>
-                        <td data-label="Contact">jennifer.lee@email.com</td>
-                        <td data-label="Date">
-                            <div class="date-tag">
-                                <i class="fas fa-calendar"></i>
-                                Oct 14, 2025
-                            </div>
-                        </td>
-                        <td data-label="Time">
-                            <div class="time-tag">
-                                <i class="fas fa-clock"></i>
-                                10:45 AM
-                            </div>
-                        </td>
-                        <td data-label="Item">
-                            <strong>Student ID</strong>
-                        </td>
-                        <td data-label="Purpose">Claim Item</td>
-                        <td data-label="Status"><span class="badge warning">Pending</span></td>
-                        <td data-label="Actions">
-                            <div class="action-btns">
-                                <button class="btn-sm btn-approve" title="Approve">
-                                    <i class="fas fa-check"></i>
-                                    <span>Approve</span>
-                                </button>
-                                <button class="btn-sm btn-reject" title="Reject">
-                                    <i class="fas fa-times"></i>
-                                    <span>Reject</span>
-                                </button>
-                                <button class="btn-sm btn-info" title="View Details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
+                                <button class="btn-sm btn-approve" title="Approve"><i class="fas fa-check"></i></button>
+                                <button class="btn-sm btn-reject" title="Reject"><i class="fas fa-times"></i></button>
+                                <button class="btn-sm btn-info" title="View Details"><i class="fas fa-eye"></i></button>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
-        <div class="table-footer">
-            <div class="showing-info">
-                Showing 1 to 3 of 24 pending appointments
-            </div>
-            <div class="pagination">
-                <button class="page-btn" disabled>
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="page-btn active">1</button>
-                <button class="page-btn">2</button>
-                <button class="page-btn">3</button>
-                <button class="page-btn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
         </div>
-    </div>
 
-    <!-- Approved Appointments Table -->
     <div class="table-card tab-content" id="approved">
         <div class="table-header">
             <h5>Approved Appointments</h5>
@@ -281,8 +204,7 @@
                     <input type="text" placeholder="Search appointments...">
                 </div>
                 <button class="btn-export">
-                    <i class="fas fa-download"></i>
-                    Export
+                    <i class="fas fa-download"></i> Export
                 </button>
             </div>
         </div>
@@ -330,122 +252,109 @@
                         <td data-label="Status"><span class="badge success">Approved</span></td>
                         <td data-label="Actions">
                             <div class="action-btns">
-                                <button class="btn-sm btn-complete" title="Mark as Complete">
-                                    <i class="fas fa-check-double"></i>
-                                    <span>Complete</span>
-                                </button>
-                                <button class="btn-sm btn-info" title="View Details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-sm btn-danger" title="Cancel">
-                                    <i class="fas fa-times"></i>
-                                </button>
+                                <button class="btn-sm btn-complete" title="Complete"><i class="fas fa-check-double"></i></button>
+                                <button class="btn-sm btn-info" title="View Details"><i class="fas fa-eye"></i></button>
+                                <button class="btn-sm btn-danger" title="Cancel"><i class="fas fa-times"></i></button>
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td data-label="User">
-                            <div class="user-cell">
-                                <div class="user-avatar">AS</div>
-                                <div class="user-info">
-                                    <strong>Anna Smith</strong>
-                                </div>
-                            </div>
-                        </td>
-                        <td data-label="Contact">anna.smith@email.com</td>
-                        <td data-label="Date">
-                            <div class="date-tag">
-                                <i class="fas fa-calendar"></i>
-                                Oct 14, 2025
-                            </div>
-                        </td>
-                        <td data-label="Time">
-                            <div class="time-tag">
-                                <i class="fas fa-clock"></i>
-                                10:45 AM
-                            </div>
-                        </td>
-                        <td data-label="Item">
-                            <strong>Black Bag</strong>
-                        </td>
-                        <td data-label="Purpose">Claim Item</td>
-                        <td data-label="Status"><span class="badge success">Approved</span></td>
-                        <td data-label="Actions">
-                            <div class="action-btns">
-                                <button class="btn-sm btn-complete" title="Mark as Complete">
-                                    <i class="fas fa-check-double"></i>
-                                    <span>Complete</span>
-                                </button>
-                                <button class="btn-sm btn-info" title="View Details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-sm btn-danger" title="Cancel">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </td>
-                   </tr>
                 </tbody>
             </table>
         </div>
-
-        <div class="table-footer">
-            <div class="showing-info">
-                Showing 1 to 2 of 98 approved appointments
-            </div>
-            <div class="pagination">
-                <button class="page-btn" disabled>
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="page-btn active">1</button>
-                <button class="page-btn">2</button>
-                <button class="page-btn">3</button>
-                <span class="page-dots">...</span>
-                <button class="page-btn">20</button>
-                <button class="page-btn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
-            </div>
         </div>
-    </div> <div class="table-card tab-content" id="calendar">
+
+    <div class="table-card tab-content" id="calendar">
         <div class="table-header">
             <h5>Appointment Calendar</h5>
         </div>
-        <div class="card-body p-4">
-            <calendar-widget></calendar-widget>
+        <div class="card-body p-0"> 
+            <div style="padding: 1rem; min-height: 85vh;">
+                <calendar-widget></calendar-widget>
+            </div>
         </div>
     </div>
 
-</div> 
 </main>
 @endsection
 
 @section('scripts')
 <script>
     document.addEventListener('click', function(e) {
-        // Tab Switching Logic
+        
+        // --- 1. Tab Switching Logic ---
         const tabBtn = e.target.closest('.tab-btn');
         if (tabBtn) {
-            // 1. Deactivate all tabs and content
+            // Remove active classes from all tabs and content
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
 
-            // 2. Activate clicked tab
+            // Add active class to the clicked tab
             tabBtn.classList.add('active');
 
-            // 3. Show corresponding content
+            // Show the corresponding tab content
             const tabId = tabBtn.getAttribute('data-tab');
             const content = document.getElementById(tabId);
             if (content) {
                 content.classList.add('active');
                 
-                // --- FIX: Force Resize for Calendar ---
+                // Force Calendar Resize (Fixes visibility issues on mobile)
                 if (tabId === 'calendar') {
                     setTimeout(() => {
                         window.dispatchEvent(new Event('resize'));
-                    }, 200); // Small delay to ensure the tab is visible first
+                    }, 100);
                 }
             }
+            return; 
+        }
+
+        
+        const approveBtn = e.target.closest('.btn-approve');
+        if (approveBtn) {
+            if(confirm('Are you sure you want to Approve this request?')) {
+                // Add your backend logic here (e.g., submit a form or AJAX request)
+                console.log('Approved');
+                alert('Appointment Approved!');
+            }
+            return;
+        }
+
+        // Reject Button
+        const rejectBtn = e.target.closest('.btn-reject');
+        if (rejectBtn) {
+            if(confirm('Are you sure you want to Reject this request?')) {
+                console.log('Rejected');
+                alert('Appointment Rejected.');
+            }
+            return;
+        }
+
+        // Complete Button
+        const completeBtn = e.target.closest('.btn-complete');
+        if (completeBtn) {
+            if(confirm('Mark this appointment as Completed?')) {
+                console.log('Completed');
+                alert('Appointment Marked as Complete.');
+            }
+            return;
+        }
+
+        // Cancel Button
+        const cancelBtn = e.target.closest('.btn-danger'); // Assuming .btn-danger is for Cancel
+        if (cancelBtn) {
+            if(confirm('Are you sure you want to Cancel this appointment?')) {
+                console.log('Cancelled');
+                alert('Appointment Cancelled.');
+            }
+            return;
+        }
+
+        // View Details Button
+        const viewBtn = e.target.closest('.btn-info');
+        if (viewBtn) {
+            console.log('View Details clicked');
+            alert('Opening details...');
+            // You can open a modal here if you have one
+            return;
         }
     });
 </script>

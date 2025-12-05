@@ -10,7 +10,7 @@
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="text-center mb-5">
-                <h2 class="fw-bold">Report a Lost or Found Item</h2>
+                <h2 class="fw-bold">Report Item</h2>
                 
             </div>
 
