@@ -19,65 +19,41 @@
         </button>
     </div>
 
-    <!-- Stats Overview -->
     <div class="stats-grid">
         <div class="stat-card">
             <div class="stat-header">
                 <span class="stat-title">Total Users</span>
-                <div class="stat-icon green">
-                    <i class="fas fa-users"></i>
-                </div>
+                <div class="stat-icon green"><i class="fas fa-users"></i></div>
             </div>
             <div class="stat-value">1,234</div>
-            <div class="stat-change positive">
-                <i class="fas fa-arrow-up"></i>
-                <span>15% from last month</span>
-            </div>
+            <div class="stat-change positive"><i class="fas fa-arrow-up"></i> <span>15% from last month</span></div>
         </div>
-
         <div class="stat-card">
             <div class="stat-header">
                 <span class="stat-title">Active Users</span>
-                <div class="stat-icon blue">
-                    <i class="fas fa-user-check"></i>
-                </div>
+                <div class="stat-icon blue"><i class="fas fa-user-check"></i></div>
             </div>
             <div class="stat-value">1,128</div>
-            <div class="stat-change positive">
-                <i class="fas fa-arrow-up"></i>
-                <span>8% from last month</span>
-            </div>
+            <div class="stat-change positive"><i class="fas fa-arrow-up"></i> <span>8% from last month</span></div>
         </div>
-
         <div class="stat-card">
             <div class="stat-header">
                 <span class="stat-title">Admins</span>
-                <div class="stat-icon yellow">
-                    <i class="fas fa-user-shield"></i>
-                </div>
+                <div class="stat-icon yellow"><i class="fas fa-user-shield"></i></div>
             </div>
             <div class="stat-value">12</div>
-            <div class="stat-change">
-                <span>No change</span>
-            </div>
+            <div class="stat-change"><span>No change</span></div>
         </div>
-
         <div class="stat-card">
             <div class="stat-header">
-                <span class="stat-title">Inactive Users</span>
-                <div class="stat-icon red">
-                    <i class="fas fa-user-times"></i>
-                </div>
+                <span class="stat-title">Inactive</span>
+                <div class="stat-icon red"><i class="fas fa-user-times"></i></div>
             </div>
             <div class="stat-value">106</div>
-            <div class="stat-change negative">
-                <i class="fas fa-arrow-down"></i>
-                <span>3% from last month</span>
-            </div>
+            <div class="stat-change negative"><i class="fas fa-arrow-down"></i> <span>3% from last month</span></div>
         </div>
     </div>
 
-    <!-- Filter Section -->
     <div class="filter-section">
         <div class="filter-group">
             <label>Role</label>
@@ -88,35 +64,17 @@
                 <option value="student">Student</option>
             </select>
         </div>
-
         <div class="filter-group">
             <label>Status</label>
             <select class="filter-select">
                 <option value="">All Status</option>
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
-                <option value="suspended">Suspended</option>
             </select>
         </div>
-
-        <div class="filter-group">
-            <label>Date Joined</label>
-            <select class="filter-select">
-                <option value="">All Time</option>
-                <option value="today">Today</option>
-                <option value="week">This Week</option>
-                <option value="month">This Month</option>
-                <option value="year">This Year</option>
-            </select>
-        </div>
-
-        <button class="btn-reset">
-            <i class="fas fa-redo"></i>
-            Reset Filters
-        </button>
+        <button class="btn-reset"><i class="fas fa-redo"></i> Reset</button>
     </div>
 
-    <!-- Users Table -->
     <div class="table-card">
         <div class="table-header">
             <h5>All Users (1,234)</h5>
@@ -125,190 +83,92 @@
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Search users...">
                 </div>
-                <button class="btn-export">
-                    <i class="fas fa-download"></i>
-                    Export
-                </button>
+                <button class="btn-export"><i class="fas fa-download"></i> Export</button>
             </div>
         </div>
         <div class="table-responsive">
             <table class="custom-table">
                 <thead>
                     <tr>
-                        <th>User ID</th>
+                        <th>ID</th>
                         <th>User</th>
                         <th>Email</th>
                         <th>Role</th>
                         <th>Status</th>
-                        <th>Date Joined</th>
+                        <th>Joined</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td data-label="User ID">#U001</td>
+                        <td data-label="ID">#U001</td>
                         <td data-label="User">
                             <div class="user-cell">
                                 <div class="user-avatar">JD</div>
-                                <div class="user-info">
-                                    <strong>Juan Dela Cruz</strong>
-                                </div>
+                                <div class="user-info"><strong>Juan Dela Cruz</strong></div>
                             </div>
                         </td>
-                        <td data-label="Email">juancruz@email.com</td>
-                        <td data-label="Role">
-                            <span class="role-badge admin">
-                                <i class="fas fa-user-shield"></i>
-                                Admin
-                            </span>
-                        </td>
+                        <td data-label="Email">juan@email.com</td>
+                        <td data-label="Role"><span class="badge info">Student</span></td>
                         <td data-label="Status"><span class="badge success">Active</span></td>
-                        <td data-label="Date Joined">March 12, 2024</td>
+                        <td data-label="Joined">Oct 12, 2024</td>
                         <td data-label="Actions">
                             <div class="action-btns">
-                                <button class="btn-sm btn-info" title="View Details">
+                                <button class="btn-sm btn-info" title="View" 
+                                    data-id="#U001" 
+                                    data-name="Juan Dela Cruz" 
+                                    data-email="juan@email.com" 
+                                    data-role="Student" 
+                                    data-status="Active" 
+                                    data-joined="Oct 12, 2024">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <button class="btn-sm btn-success" title="Edit">
+                                <button class="btn-sm btn-success" title="Edit"
+                                    data-id="#U001" 
+                                    data-name="Juan Dela Cruz" 
+                                    data-email="juan@email.com" 
+                                    data-role="student" 
+                                    data-status="active">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn-sm btn-danger" title="Delete">
+                                <button class="btn-sm btn-danger" title="Delete" data-id="#U001" data-name="Juan Dela Cruz">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td data-label="User ID">#U002</td>
+                        <td data-label="ID">#U002</td>
                         <td data-label="User">
                             <div class="user-cell">
                                 <div class="user-avatar">MS</div>
-                                <div class="user-info">
-                                    <strong>Maria Santos</strong>
-                                </div>
+                                <div class="user-info"><strong>Maria Santos</strong></div>
                             </div>
                         </td>
-                        <td data-label="Email">mariasantos@email.com</td>
-                        <td data-label="Role">
-                            <span class="role-badge student">
-                                <i class="fas fa-user-graduate"></i>
-                                Student
-                            </span>
-                        </td>
+                        <td data-label="Email">maria@email.com</td>
+                        <td data-label="Role"><span class="badge warning">Admin</span></td>
                         <td data-label="Status"><span class="badge danger">Inactive</span></td>
-                        <td data-label="Date Joined">June 5, 2024</td>
+                        <td data-label="Joined">Nov 01, 2024</td>
                         <td data-label="Actions">
                             <div class="action-btns">
-                                <button class="btn-sm btn-activate" title="Activate User">
-                                    <i class="fas fa-check-circle"></i>
-                                    <span>Activate</span>
-                                </button>
-                                <button class="btn-sm btn-info" title="View Details">
+                                <button class="btn-sm btn-info" title="View" 
+                                    data-id="#U002" 
+                                    data-name="Maria Santos" 
+                                    data-email="maria@email.com" 
+                                    data-role="Admin" 
+                                    data-status="Inactive" 
+                                    data-joined="Nov 01, 2024">
                                     <i class="fas fa-eye"></i>
                                 </button>
-                                <button class="btn-sm btn-success" title="Edit">
+                                <button class="btn-sm btn-success" title="Edit"
+                                    data-id="#U002" 
+                                    data-name="Maria Santos" 
+                                    data-email="maria@email.com" 
+                                    data-role="admin" 
+                                    data-status="inactive">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn-sm btn-danger" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td data-label="User ID">#U003</td>
-                        <td data-label="User">
-                            <div class="user-cell">
-                                <div class="user-avatar">AR</div>
-                                <div class="user-info">
-                                    <strong>Alex Reyes</strong>
-                                </div>
-                            </div>
-                        </td>
-                        <td data-label="Email">alexreyes@email.com</td>
-                        <td data-label="Role">
-                            <span class="role-badge staff">
-                                <i class="fas fa-user-tie"></i>
-                                Staff
-                            </span>
-                        </td>
-                        <td data-label="Status"><span class="badge success">Active</span></td>
-                        <td data-label="Date Joined">January 15, 2024</td>
-                        <td data-label="Actions">
-                            <div class="action-btns">
-                                <button class="btn-sm btn-info" title="View Details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-sm btn-success" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-sm btn-danger" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td data-label="User ID">#U004</td>
-                        <td data-label="User">
-                            <div class="user-cell">
-                                <div class="user-avatar">CG</div>
-                                <div class="user-info">
-                                    <strong>Carlos Garcia</strong>
-                                </div>
-                            </div>
-                        </td>
-                        <td data-label="Email">carlosgarcia@email.com</td>
-                        <td data-label="Role">
-                            <span class="role-badge student">
-                                <i class="fas fa-user-graduate"></i>
-                                Student
-                            </span>
-                        </td>
-                        <td data-label="Status"><span class="badge success">Active</span></td>
-                        <td data-label="Date Joined">September 22, 2024</td>
-                        <td data-label="Actions">
-                            <div class="action-btns">
-                                <button class="btn-sm btn-info" title="View Details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-sm btn-success" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-sm btn-danger" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td data-label="User ID">#U005</td>
-                        <td data-label="User">
-                            <div class="user-cell">
-                                <div class="user-avatar">LT</div>
-                                <div class="user-info">
-                                    <strong>Lisa Tan</strong>
-                                </div>
-                            </div>
-                        </td>
-                        <td data-label="Email">lisatan@email.com</td>
-                        <td data-label="Role">
-                            <span class="role-badge admin">
-                                <i class="fas fa-user-shield"></i>
-                                Admin
-                            </span>
-                        </td>
-                        <td data-label="Status"><span class="badge success">Active</span></td>
-                        <td data-label="Date Joined">February 8, 2024</td>
-                        <td data-label="Actions">
-                            <div class="action-btns">
-                                <button class="btn-sm btn-info" title="View Details">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                                <button class="btn-sm btn-success" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-sm btn-danger" title="Delete">
+                                <button class="btn-sm btn-danger" title="Delete" data-id="#U002" data-name="Maria Santos">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </div>
@@ -317,67 +177,222 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
-        <!-- Pagination -->
-        <div class="table-footer">
-            <div class="showing-info">
-                Showing 1 to 5 of 1,234 users
-            </div>
-            <div class="pagination">
-                <button class="page-btn" disabled>
-                    <i class="fas fa-chevron-left"></i>
-                </button>
-                <button class="page-btn active">1</button>
-                <button class="page-btn">2</button>
-                <button class="page-btn">3</button>
-                <span class="page-dots">...</span>
-                <button class="page-btn">247</button>
-                <button class="page-btn">
-                    <i class="fas fa-chevron-right"></i>
-                </button>
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title fw-bold">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="POST">
+                    @csrf
+                    <div class="modal-body p-4">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">Full Name</label>
+                            <input type="text" name="name" class="form-control" placeholder="e.g. Juan Dela Cruz">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">Email Address</label>
+                            <input type="email" name="email" class="form-control" placeholder="name@example.com">
+                        </div>
+                        <div class="row g-2 mb-3">
+                            <div class="col-6">
+                                <label class="form-label text-muted small fw-bold">Role</label>
+                                <select name="role" class="form-select">
+                                    <option value="student">Student</option>
+                                    <option value="staff">Staff</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label text-muted small fw-bold">Status</label>
+                                <select name="status" class="form-select">
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">Password</label>
+                            <input type="password" name="password" class="form-control" placeholder="Create password">
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-link text-muted text-decoration-none" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary px-4">Create User</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="viewUserModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title fw-bold">User Profile</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 text-center">
+                    <div class="bg-light rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 80px; height: 80px;">
+                        <span id="view_avatar" class="fs-2 fw-bold text-primary">--</span>
+                    </div>
+                    <h4 id="view_name" class="fw-bold mb-0">--</h4>
+                    <p id="view_email" class="text-muted small">--</p>
+                    
+                    <div class="d-flex justify-content-center gap-2 mt-3 mb-4">
+                        <span id="view_role" class="badge bg-light text-dark border">--</span>
+                        <span id="view_status" class="badge bg-secondary">--</span>
+                    </div>
+
+                    <div class="card bg-light border-0 p-3 text-start">
+                        <div class="row">
+                            <div class="col-6">
+                                <small class="text-muted fw-bold d-block">User ID</small>
+                                <span id="view_id" class="text-dark">--</span>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted fw-bold d-block">Joined Date</small>
+                                <span id="view_joined" class="text-dark">--</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary w-100" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title fw-bold">Edit User Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="" method="POST">
+                    @csrf
+                    @method('PUT')
+                    <input type="hidden" id="edit_id" name="id">
+                    
+                    <div class="modal-body p-4">
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">Full Name</label>
+                            <input type="text" id="edit_name" name="name" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-muted small fw-bold">Email Address</label>
+                            <input type="email" id="edit_email" name="email" class="form-control">
+                        </div>
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <label class="form-label text-muted small fw-bold">Role</label>
+                                <select id="edit_role" name="role" class="form-select">
+                                    <option value="student">Student</option>
+                                    <option value="staff">Staff</option>
+                                    <option value="admin">Admin</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label text-muted small fw-bold">Status</label>
+                                <select id="edit_status" name="status" class="form-select">
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-link text-muted text-decoration-none" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success px-4">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg">
+                <div class="modal-body p-4 text-center">
+                    <div class="mb-3 text-danger">
+                        <i class="fas fa-trash-alt fa-3x opacity-50"></i>
+                    </div>
+                    <h5 class="fw-bold mb-2">Delete User?</h5>
+                    <p class="text-muted small mb-4">
+                        Are you sure you want to delete <strong id="delete_name" class="text-dark">User</strong>? 
+                        This action cannot be undone.
+                    </p>
+                    <div class="d-grid gap-2">
+                        <form action="" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" id="delete_id" name="id">
+                            <button type="submit" class="btn btn-danger w-100 fw-bold">Yes, Delete User</button>
+                        </form>
+                        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </main>
 @endsection
 
 @section('scripts')
 <script>
-    // Filter functionality
-    document.querySelectorAll('.filter-select').forEach(select => {
-        select.addEventListener('change', function() {
-            console.log('Filter changed:', this.value);
-            // Add your filter logic here
-        });
-    });
-
-    // Reset filters
-    document.querySelector('.btn-reset').addEventListener('click', function() {
-        document.querySelectorAll('.filter-select').forEach(select => {
-            select.value = '';
-        });
-    });
-
-    // Activate button functionality
-    document.querySelectorAll('.btn-activate').forEach(btn => {
+    // 1. View User Logic
+    document.querySelectorAll('.btn-info').forEach(btn => {
         btn.addEventListener('click', function() {
-            if(confirm('Activate this user account?')) {
-                console.log('User activated');
-                // Add your activation logic here
-            }
+            // Get data from attributes
+            const d = this.dataset;
+            
+            // Populate Modal
+            document.getElementById('view_avatar').innerText = d.name.substring(0, 2).toUpperCase();
+            document.getElementById('view_name').innerText = d.name;
+            document.getElementById('view_email').innerText = d.email;
+            document.getElementById('view_role').innerText = d.role;
+            document.getElementById('view_id').innerText = d.id;
+            document.getElementById('view_joined').innerText = d.joined;
+            
+            // Status Badge
+            const statusBadge = document.getElementById('view_status');
+            statusBadge.innerText = d.status;
+            statusBadge.className = 'badge ' + (d.status === 'Active' ? 'success' : 'danger');
+
+            // Show Modal
+            new bootstrap.Modal(document.getElementById('viewUserModal')).show();
         });
     });
 
-    // Search functionality
-    document.querySelector('.search-box input').addEventListener('input', function() {
-        console.log('Searching:', this.value);
-        // Add your search logic here
+    // 2. Edit User Logic
+    document.querySelectorAll('.btn-success').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const d = this.dataset;
+
+            document.getElementById('edit_id').value = d.id;
+            document.getElementById('edit_name').value = d.name;
+            document.getElementById('edit_email').value = d.email;
+            document.getElementById('edit_role').value = d.role; // Ensure value matches option value
+            document.getElementById('edit_status').value = d.status;
+
+            new bootstrap.Modal(document.getElementById('editUserModal')).show();
+        });
     });
 
-    // Export functionality
-    document.querySelector('.btn-export').addEventListener('click', function() {
-        console.log('Exporting data...');
-        // Add your export logic here
+    // 3. Delete User Logic
+    document.querySelectorAll('.btn-danger').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.getElementById('delete_id').value = this.dataset.id;
+            document.getElementById('delete_name').innerText = this.dataset.name;
+            
+            new bootstrap.Modal(document.getElementById('deleteUserModal')).show();
+        });
     });
 </script>
 @endsection
