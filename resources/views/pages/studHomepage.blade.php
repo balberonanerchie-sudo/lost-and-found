@@ -20,11 +20,11 @@
                     The simplest, most reliable platform connecting lost items with their rightful owners in your community. 
                 </p>
                 <div class="d-flex flex-column flex-sm-row gap-3">
-                    <a href="{{ url('/search') }}" class="btn btn-primary-custom btn-lg">
+                    <button class="btn btn-primary-custom btn-lg me-sm-3 mb-2 mb-sm-0" onclick="window.location.href='{{ url('/search') }}'">
                         <i data-lucide="search" class="me-2 inline-block"></i> Search Found Items
-                    </a>
-                    <button class="btn btn-outline-custom btn-lg" data-bs-toggle="modal" data-bs-target="#reportItemModal">
-                        Report Lost Item
+                    </button>
+                    <button class="btn btn-outline-custom btn-lg" onclick="window.location.href='{{ url('/report-item') }}'">
+                         <i data-lucide="search" class="me-2 inline-block"></i> Report Lost Item          
                     </button>
                 </div>
             </div>
@@ -35,30 +35,6 @@
     </div>
 </section>
 
-
-<div class="modal fade" id="reportItemModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 shadow-lg rounded-4">
-            <div class="modal-header border-bottom-0 pb-0">
-                <h5 class="modal-title fw-bold">Report an Item</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body p-4 p-lg-5">
-                <form>
-                    <div class="row g-3">
-                        <div class="col-12">
-                            <label class="form-label fw-medium">What is it?</label>
-                            <input type="text" class="form-control form-control-lg" placeholder="e.g. Blue Umbrella">
-                        </div>
-                        </div>
-                    <div class="mt-4 d-flex justify-content-end gap-2">
-                        <button type="button" class="btn btn-outline-custom border-0" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary-custom">Submit Report</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-        
     </div>
     
 </div>
