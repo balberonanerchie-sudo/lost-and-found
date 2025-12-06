@@ -39,17 +39,48 @@
 
         <div id="forms-container">
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class="form-wrapper active" id="form-login-user">
                 <form method="POST" action="{{ url('/login') }}">
                     @csrf
                     <div class="mb-3">
                         <label class="form-label-custom">Email Address</label>
-                        <input type="email" name="email" class="form-control" placeholder="user@example.com">
+                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="user@example.com">
                     </div>
                     <div class="mb-3">
                         <label class="form-label-custom">Password</label>
-                        <input type="password" name="password" class="form-control" placeholder="••••••••">
+                        <input type="password" name="password" class="form-control @error('email') is-invalid @enderror" placeholder="••••••••">
                     </div>
+                    @error('email')
+                        <div class="invalid-feedback" style="display: block; font-size: 0.9rem; color: #dc3545; margin-top: 5px;">
+                            {{ $message }}
+                        </div>
+                    @enderror
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="remUser">
@@ -61,6 +92,25 @@
                 </form>
             </div>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             <div class="form-wrapper" id="form-login-admin">
                 <div class="alert alert-success py-2 px-3 mb-3" style="font-size: 0.8rem; border: 1px solid var(--brand-primary); background: #e8f5e9; color: var(--brand-dark);">
                     <i class="bi bi-shield-lock me-1"></i> Admin Portal
@@ -69,15 +119,42 @@
                     @csrf
                     <div class="mb-3">
                         <label class="form-label-custom">Admin Email</label>
-                        <input type="email" name="email" class="form-control" placeholder="admin@wefind.com">
+                        <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="">
                     </div>
                     <div class="mb-3">
                         <label class="form-label-custom">Secure Key</label>
-                        <input type="password" name="password" class="form-control" placeholder="••••••••">
+                        <input type="password" name="password" class="form-control @error('email') is-invalid @enderror" placeholder="">
                     </div>
+                    @error('email')
+                        <div class="invalid-feedback" style="display: block; font-size: 0.9rem; color: #dc3545; margin-top: 5px;">
+                            {{ $message }}
+                        </div>
+                    @enderror
                     <button type="submit" class="btn-action">Access Dashboard</button>
                 </form>
             </div>
+
+
+
+
+
+
+
+
+
+
+
+
+            
+
+
+
+
+
+
+
+
+
 
             <div class="form-wrapper" id="form-register-user">
                 <form method="POST" action="{{ url('/register') }}">
@@ -90,11 +167,11 @@
                     <div class="row mb-3">
                         <div class="col-6">
                             <label class="form-label-custom">Contact No.</label>
-                            <input type="tel" class="form-control" placeholder="09XX...">
+                            <input type="tel" name="contact" class="form-control" placeholder="09XX...">
                         </div>
                         <div class="col-6">
                             <label class="form-label-custom">Birthdate</label>
-                            <input type="date" class="form-control">
+                            <input type="date" name="birthdate" class="form-control">
                         </div>
                     </div>
 
@@ -114,7 +191,7 @@
                     </div>
 
                     <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" id="termsCheck">
+                        <input class="form-check-input" type="checkbox" id="termsCheck" required>
                         <label class="form-check-label" for="termsCheck" style="font-size: 0.8rem; color: #888;">
                             I agree to the <a href="#" class="terms-link">Terms & Conditions</a>
                         </label>
@@ -122,10 +199,57 @@
 
                     <button type="submit" class="btn-action">Create Account</button>
                 </form>
+
             </div>
 
 
         </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <div class="social-area">
             <span class="social-label">FOLLOW</span>
@@ -139,8 +263,18 @@
 
 @section('scripts')
 <script>
+
+    const wasAdminLoginFailure = !!'{{ old("from_admin_login") }}';
+
     let currentMode = 'login'; // login or register
     let currentRole = 'user';  // user or admin
+
+
+    // 💡 FIX: Check for the admin login error and switch the form state
+    @if ($errors->any() && Request::path() === 'login' && old('from_admin_login'))
+        currentRole = 'admin';
+    @endif
+
 
     function updateUI() {
         // 1. Hide all forms first
@@ -167,6 +301,12 @@
         } else {
             heroText.innerHTML = "Join<br>weFind!";
         }
+
+        // 4. Update the visual role switcher to match the JS state
+        document.querySelectorAll('.role-option').forEach(opt => opt.classList.remove('active'));
+        const roleOption = document.getElementById(`role-${currentRole}`);
+        if(roleOption) roleOption.classList.add('active');
+
     }
 
     function switchMode(mode) {
@@ -194,5 +334,25 @@
         document.getElementById(`role-${role}`).classList.add('active');
         updateUI();
     }
+
+    // 💡 FIX: Add this line to run the UI update after the variables are set
+    document.addEventListener('DOMContentLoaded', () => {
+        // Check if we are coming from a failed submission and set the correct tab
+        updateUI(); 
+        
+        // Ensure the correct 'Login' or 'Sign Up' tab is highlighted
+        document.querySelectorAll('.btn-toggle-main').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(`tab-${currentMode}`).classList.add('active');
+        
+        // If currentMode is register, hide the role switcher
+        const roleSwitcher = document.getElementById('role-switcher-container');
+        if (currentMode === 'register') {
+            roleSwitcher.style.display = 'none';
+        } else {
+            roleSwitcher.style.display = 'flex';
+        }
+    });
+
+
 </script>
 @endsection

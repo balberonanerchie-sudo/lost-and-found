@@ -14,7 +14,7 @@ class LoginController extends Controller
         return view('pages.loginRegister');
     }
 
-    public function login(Request $request)
+    public function loginvalidate(Request $request)
     {
         $credentials = $request->validate([
             'email' => ['required', 'email'],
@@ -24,10 +24,10 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('adminDashboard');
+            return redirect()->intended('home');
         }
 
-        return back()->withErrors([
+        return redirect()->route('login')->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ]);
     }
@@ -42,12 +42,13 @@ class LoginController extends Controller
         if (Auth::guard('admin')->attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('adminDashboard');
+            return redirect()->intended(route('adminDashboard'));
         }
-
-        return back()->withErrors([
+        else{
+        return redirect()->route('login')->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ]);
+        ])->withInput(['from_admin_login' => true]);
+        }   
     }
 
     public function showRegistrationForm()
@@ -55,24 +56,28 @@ class LoginController extends Controller
         return view('pages.loginRegister');
     }
 
-    public function register(Request $request)
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+    public function registerValidate(Request $request)
+{
+    $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    // Create user
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+    ]);
 
-        Auth::login($user);
+    // Log user in automatically
+    Auth::login($user);
 
-        return redirect('adminDashboard');
-    }
+    // Redirect to homepage
+    return redirect()->route('home');
+}
+
 
     public function logout(Request $request)
     {
@@ -83,5 +88,14 @@ class LoginController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function create(array $data)
+    {
+        return User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
     }
 }
