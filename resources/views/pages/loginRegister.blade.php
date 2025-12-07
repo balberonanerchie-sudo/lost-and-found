@@ -145,7 +145,7 @@
                         </div>
 
                         <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" id="termsCheck">
+                            <input class="form-check-input" type="checkbox" id="termsCheck" required>
                             <label class="form-check-label" for="termsCheck" style="font-size: 0.8rem; color: #888;">
                                 I agree to the <a href="#" class="terms-link">Terms & Conditions</a>
                             </label>

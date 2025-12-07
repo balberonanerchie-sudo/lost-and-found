@@ -25,14 +25,22 @@ Route::middleware('auth')->group(function () {
 
     // Student pages
     Route::get('/home', [PageController::class, 'welcome'])->name('home');
-    Route::get('/search', [PageController::class, 'search'])->name('search');
+    Route::get('/search', [ManageItemController::class, 'userIndex'])->name('search');
     Route::get('/book-appointment', [PageController::class, 'bookAppointment'])->name('appointment');
     Route::get('/report-item', [PageController::class, 'reportItem'])->name('report');
 
     // Admin pages
     Route::prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+ 
+        // Item management action routes      
+        Route::delete('/manage-item/{item}', [ManageItemController::class, 'destroy'])->name('admin.items.destroy');
+
+        Route::put('/manage-item/{item}', [ManageItemController::class, 'update'])->name('admin.items.update');
+        Route::patch('/manage-item/{item}/claim', [ManageItemController::class, 'markClaimed'])->name('admin.items.claim');
+
         Route::get('/manage-item', [ManageItemController::class, 'index'])->name('admin.items');
+
         Route::get('/manage-user', [ManageUserController::class, 'index'])->name('admin.users');
         Route::get('/lost-reports', [LostReportController::class, 'index'])->name('admin.lostReports');
         Route::get('/found-reports', [FoundReportController::class, 'index'])->name('admin.foundReports');
@@ -40,3 +48,6 @@ Route::middleware('auth')->group(function () {
 
     });
 });
+
+//Item management routes
+Route::post('/items/store', [ManageItemController::class, 'store'])->name('items.store');
