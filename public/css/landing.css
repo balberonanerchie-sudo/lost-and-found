@@ -1,9 +1,9 @@
 /* public/css/landing.css */
 :root {
-    --primary: #2d5f3f;       /* Forest Green */
+    --primary: #2d5f3f;       
     --primary-hover: #1e402b;
-    --accent: #10b981;        /* Brighter Green for icons */
-    --bg-light: #f9fafb;      /* Light Gray Background */
+    --accent: #10b981;      
+    --bg-light: #f9fafb;      
     --bg-white: #ffffff;
     --text-dark: #1f2937;
     --text-muted: #6b7280;
@@ -18,7 +18,7 @@ body {
     color: var(--text-dark);
 }
 
-/* --- Navbar --- */
+
 .navbar-custom {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
