@@ -48,7 +48,7 @@
                     <a href="{{ route('admin.items') }}"
                         class="nav-link {{ request()->routeIs('admin.items') ? 'active' : '' }}">
                         <i class="fas fa-box"></i>
-                        <span>Manage Items</span>
+                        <span>Items</span>
                     </a>
                 </li>
                 <li>
@@ -58,6 +58,19 @@
                         <span>Manage Users</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('admin.lostReports') }}" 
+                        class="nav-link {{ request()->routeIs('admin.lostReports') ? 'active' : '' }}">
+                        <i class="fas fa-search-minus"></i>
+                        <span>Lost Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('admin.foundReports') }}" 
+                        class="nav-link {{ request()->routeIs('admin.foundReports') ? 'active' : '' }}">
+                        <i class="fas fa-search-plus"></i>
+                        <span>Found Reports</span>
+                    </a>
                 <li>
                     <a href="{{ route('admin.appointments') }}"
                         class="nav-link {{ request()->routeIs('admin.appointments') ? 'active' : '' }}">

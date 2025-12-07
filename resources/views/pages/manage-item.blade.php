@@ -10,7 +10,7 @@
     <main class="main-content">
         <div class="page-header">
             <div>
-                <h3>Manage Items</h3>
+                <h3>Items</h3>
             </div>
             <button class="btn-primary" data-bs-toggle="modal" data-bs-target="#addItemModal">
                 <i class="fas fa-plus"></i>

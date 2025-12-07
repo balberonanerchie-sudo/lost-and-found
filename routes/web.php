@@ -7,6 +7,8 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ManageItemController;
 use App\Http\Controllers\ManageUserController;
 use App\Http\Controllers\CheckAppointmentController;
+use App\Http\Controllers\LostReportController;
+use App\Http\Controllers\FoundReportController;
 
 // Guest: show login/register page
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
@@ -31,6 +33,8 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
         Route::get('/manage-item', [ManageItemController::class, 'index'])->name('admin.items');
         Route::get('/manage-user', [ManageUserController::class, 'index'])->name('admin.users');
+        Route::get('/lost-reports', [LostReportController::class, 'index'])->name('admin.lostReports');
+        Route::get('/found-reports', [FoundReportController::class, 'index'])->name('admin.foundReports');
         Route::get('/appointments', [CheckAppointmentController::class, 'index'])->name('admin.appointments');
     });
 });
