@@ -88,7 +88,7 @@
 
                             {{-- Claim Button --}}
                             <a href="{{ url('/book-appointment/' . $item->id) }}" 
-                            class="btn btn-primary w-100 mt-3 btn-sm">
+                            class="btn btn-success w-100 mt-3 btn-sm">
                                 Claim
                             </a>
                         </div>

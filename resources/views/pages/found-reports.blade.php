@@ -28,7 +28,7 @@
             </div>
             
             <div class="table-responsive">
-                <table class="custom-table table-hover table-bordered">
+                <table class="custom-table table-hover">
                     <thead class="table-light sticky-top" style="z-index: 1;">
                         <tr>
                             <th>Photo</th>

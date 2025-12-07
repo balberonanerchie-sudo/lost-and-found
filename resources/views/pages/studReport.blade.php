@@ -13,9 +13,8 @@
                 </div>
 
                 <div class="custom-card p-4 p-md-5 bg-white">
-                    <form action="" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('report') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-
                         <h5 class="fw-bold mb-4 text-success border-bottom pb-2 d-flex align-items-center gap-2">
                             <i data-lucide="box" size="20"></i> Item Details
                         </h5>

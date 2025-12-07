@@ -34,9 +34,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
  
         // Item management action routes      
-        Route::delete('/manage-item/{item}', [ManageItemController::class, 'destroy'])->name('admin.items.destroy');
+        Route::put('/manage-item', [ManageItemController::class, 'update'])->name('admin.items.update');
+        Route::delete('/manage-item', [ManageItemController::class, 'destroy'])->name('admin.items.destroy');
 
-        Route::put('/manage-item/{item}', [ManageItemController::class, 'update'])->name('admin.items.update');
         Route::patch('/manage-item/{item}/claim', [ManageItemController::class, 'markClaimed'])->name('admin.items.claim');
 
         Route::get('/manage-item', [ManageItemController::class, 'index'])->name('admin.items');

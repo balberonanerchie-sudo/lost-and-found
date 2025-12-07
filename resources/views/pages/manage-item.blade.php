@@ -18,45 +18,48 @@
             </button>
         </div>
 
-        <div class="filter-section">
-            <div class="filter-group">
-                <label>Status</label>
-                <select class="filter-select">
-                    <option value="">All Status</option>
-                    <option value="unclaimed">Unclaimed</option>
-                    <option value="claimed">Claimed</option>
-                    <option value="pending">Pending</option>
-                </select>
-            </div>
+        {{-- FILTERS FORM (GET) --}}
+        <form id="itemFiltersForm" action="{{ route('admin.items') }}" method="GET">
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select class="filter-select" name="status">
+                        <option value="">All Status</option>
+                        <option value="unclaimed" {{ request('status') === 'unclaimed' ? 'selected' : '' }}>Unclaimed</option>
+                        <option value="claimed"   {{ request('status') === 'claimed'   ? 'selected' : '' }}>Claimed</option>
+                        <option value="pending"   {{ request('status') === 'pending'   ? 'selected' : '' }}>Pending</option>
+                    </select>
+                </div>
 
-            <div class="filter-group">
-                <label>Category</label>
-                <select class="filter-select">
-                    <option value="">All Categories</option>
-                    <option value="electronics">Electronics</option>
-                    <option value="accessories">Accessories</option>
-                    <option value="documents">Documents</option>
-                    <option value="clothing">Clothing</option>
-                    <option value="others">Others</option>
-                </select>
-            </div>
+                <div class="filter-group">
+                    <label>Category</label>
+                    <select class="filter-select" name="category">
+                        <option value="">All Categories</option>
+                        <option value="electronics" {{ request('category') === 'electronics' ? 'selected' : '' }}>Electronics</option>
+                        <option value="accessories" {{ request('category') === 'accessories' ? 'selected' : '' }}>Accessories</option>
+                        <option value="documents"   {{ request('category') === 'documents'   ? 'selected' : '' }}>Documents</option>
+                        <option value="clothing"    {{ request('category') === 'clothing'    ? 'selected' : '' }}>Clothing</option>
+                        <option value="others"      {{ request('category') === 'others'      ? 'selected' : '' }}>Others</option>
+                    </select>
+                </div>
 
-            <div class="filter-group">
-                <label>Location</label>
-                <select class="filter-select">
-                    <option value="">All Locations</option>
-                    <option value="library">Library</option>
-                    <option value="cafeteria">Cafeteria</option>
-                    <option value="gate">Gate Area</option>
-                    <option value="classroom">Classroom</option>
-                </select>
-            </div>
+                <div class="filter-group">
+                    <label>Location</label>
+                    <input type="text"
+                           class="filter-select"
+                           name="location"
+                           placeholder="Enter Location"
+                           value="{{ request('location') }}">
+                </div>
 
-            <button class="btn-reset">
-                <i class="fas fa-redo"></i>
-                Reset Filters
-            </button>
-        </div>
+                <button type="button"
+                        class="btn-reset"
+                        onclick="window.location='{{ route('admin.items') }}'">
+                    <i class="fas fa-redo"></i>
+                    Reset Filters
+                </button>
+            </div>
+        </form>
 
         <div class="table-card">
             <div class="table-header">
@@ -64,10 +67,16 @@
                 <div class="table-actions">
                     <div class="search-box">
                         <i class="fas fa-search"></i>
-                        <input type="text" placeholder="Search items...">
+                        {{-- Search is part of the same GET form via form="itemFiltersForm" --}}
+                        <input type="text"
+                               name="search"
+                               form="itemFiltersForm"
+                               placeholder="Search items..."
+                               value="{{ request('search') }}">
                     </div>
                 </div>
             </div>
+
             <div class="table-responsive">
                 <table class="custom-table">
                     <thead>
@@ -82,10 +91,10 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                                        <tbody>
+                    <tbody>
                     @foreach ($items as $item)
                         <tr>
-                            <!-- IMAGE -->
+                            {{-- IMAGE --}}
                             <td data-label="Item Image">
                                 <div class="item-image">
                                     @if ($item->image)
@@ -96,7 +105,7 @@
                                 </div>
                             </td>
 
-                            <!-- NAME + DESCRIPTION -->
+                            {{-- NAME + DESCRIPTION --}}
                             <td data-label="Item Name">
                                 <div class="item-info">
                                     <strong>{{ $item->item_name }}</strong>
@@ -104,29 +113,30 @@
                                 </div>
                             </td>
 
-                            <!-- CATEGORY -->
+                            {{-- CATEGORY --}}
                             <td data-label="Category">{{ ucfirst($item->category) }}</td>
 
-                            <!-- LOCATION -->
+                            {{-- LOCATION --}}
                             <td data-label="Location">
                                 <div class="location-tag">
                                     <i class="fas fa-map-marker-alt"></i> {{ $item->location }}
                                 </div>
                             </td>
 
-                            <!-- DATE -->
+                            {{-- DATE --}}
                             <td data-label="Date Reported">
                                 {{ \Carbon\Carbon::parse($item->date_found)->format('M d, Y') }}
                             </td>
 
-                            <!-- STATUS -->
+                            {{-- STATUS --}}
                             <td data-label="Status">
                                 @php
                                     $badgeClass = match($item->status) {
-                                        'unclaimed' => 'warning',
-                                        'claimed' => 'success',
-                                        'returned' => 'info',
-                                        default => 'secondary'
+                                        'unclaimed' => 'danger',
+                                        'claimed'   => 'success',
+                                        'pending'   => 'warning',
+                                        'returned'  => 'info',
+                                        default     => 'secondary'
                                     };
                                 @endphp
 
@@ -135,49 +145,39 @@
                                 </span>
                             </td>
 
-                            <!-- OWNER -->
+                            {{-- OWNER --}}
                             <td data-label="Owner">
                                 {{ $item->owner ? $item->owner->name : '-' }}
                             </td>
-
-                            <!-- ACTIONS -->
+                            {{-- ACTIONS --}}
                             <td data-label="Actions">
                                 <div class="action-btns d-flex gap-1">
 
-                                    {{-- 1. MARK CLAIMED Button (Check Mark) --}}
-                                    {{-- Triggers a direct PATCH request (Quick Action, like your JS alert) --}}
+                                    {{-- 1. MARK CLAIMED Button (unchanged) --}}
                                     <form action="{{ route('admin.items.claim', $item->id) }}" method="POST" class="d-inline">
                                         @csrf
                                         @method('PATCH')
-                                        <button type="submit" 
-                                            class="btn-sm btn-claim" 
-                                            title="Mark as Claimed"
-                                            {{ $item->status == 'claimed' ? 'disabled' : '' }}>
+                                        <button type="submit"
+                                                class="btn-sm btn-claim"
+                                                title="Mark as Claimed"
+                                                {{ $item->status == 'claimed' ? 'disabled' : '' }}>
                                             <i class="fas fa-check"></i>
                                         </button>
                                     </form>
 
-                                    {{-- 2. EDIT Button (Pencil) --}}
-                                    {{-- Triggers the Edit Modal. We'll add the data attributes for the modal to use. --}}
-                                    {{-- NOTE: The button class needs to be changed to something unique, let's use btn-edit-item --}}
-                                    <button type="button" 
-                                        class="btn-sm btn-success btn-edit-item" 
-                                        title="Edit" 
-                                        data-bs-toggle="modal" 
-                                        data-bs-target="#editItemModal"
-                                        data-id="{{ $item->id }}"> {{-- <-- Critical: Pass the ID here --}}
+                                    {{-- 2. EDIT button (no data-bs-toggle / target) --}}
+                                    <button type="button"
+                                            class="btn-sm btn-success btn-edit-item"
+                                            title="Edit"
+                                            data-id="{{ $item->id }}">
                                         <i class="fas fa-edit"></i>
                                     </button>
 
-                                    {{-- 3. DELETE Button (Trash) --}}
-                                    {{-- Triggers the Delete Modal. We'll add the data attributes for the modal to use. --}}
-                                    {{-- NOTE: The button class needs to be changed to something unique, let's use btn-delete-item --}}
-                                    <button type="button" 
-                                        class="btn-sm btn-danger btn-delete-item" 
-                                        title="Delete" 
-                                        data-bs-toggle="modal" 
-                                        data-bs-target="#deleteItemModal"
-                                        data-id="{{ $item->id }}"> {{-- <-- Critical: Pass the ID here --}}
+                                    {{-- 3. DELETE button (no data-bs-toggle / target) --}}
+                                    <button type="button"
+                                            class="btn-sm btn-danger btn-delete-item"
+                                            title="Delete"
+                                            data-id="{{ $item->id }}">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
@@ -193,93 +193,97 @@
                         </tr>
                     @endif
                     </tbody>
-
                 </table>
             </div>
 
             <div class="table-footer">
-                <div class="showing-info">Showing {{ $items->firstItem() }} to {{ $items->lastItem() }} of {{ $items->total() }} items</div>
+                <div class="showing-info">
+                    Showing {{ $items->firstItem() }} to {{ $items->lastItem() }} of {{ $items->total() }} items
+                </div>
                 <div class="d-flex justify-content-end">
-                    {{ $items->links() }}
+                    {{ $items->appends(request()->query())->links() }}
                 </div>
             </div>
         </div>
 
-       <div class="modal fade" id="addItemModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-header bg-light">
-                <h5 class="modal-title fw-bold">Add New Item</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        {{-- ADD ITEM MODAL --}}
+        <div class="modal fade" id="addItemModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header bg-light">
+                        <h5 class="modal-title fw-bold">Add New Item</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="modal-body p-4">
+
+                            <div class="row g-4 mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium small text-muted">Item Name</label>
+                                    <input type="text" name="item_name" class="form-control form-control-lg" placeholder="e.g. Blue Umbrella" required>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium small text-muted">Category</label>
+                                    <select name="category" class="form-select form-select-lg" required>
+                                        <option value="" selected disabled>Select Category</option>
+                                        <option value="electronics">Electronics</option>
+                                        <option value="wallet">Wallet/ID</option>
+                                        <option value="keys">Keys</option>
+                                        <option value="clothing">Clothing</option>
+                                        <option value="accessories">Accessories</option>
+                                        <option value="other">Others</option>
+                                    </select>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label fw-medium small text-muted">Description</label>
+                                    <textarea name="description" class="form-control form-control-lg" rows="4"
+                                              placeholder="Describe the item (color, brand, distinguishing marks)..." required></textarea>
+                                </div>
+                            </div>
+
+                            <h5 class="fw-bold mb-4 text-success border-bottom pb-2 mt-5 d-flex align-items-center gap-2">
+                                <i data-lucide="map-pin" size="20"></i> Location & Time
+                            </h5>
+
+                            <div class="row g-4 mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium small text-muted">Location</label>
+                                    <input type="text" name="location" class="form-control form-control-lg"
+                                           placeholder="e.g. Main Library, Room 304" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label fw-medium small text-muted">Date</label>
+                                    <input type="date" name="date_found" class="form-control form-control-lg" required>
+                                </div>
+                            </div>
+
+                            <h5 class="fw-bold mb-4 text-success border-bottom pb-2 mt-5 d-flex align-items-center gap-2">
+                                <i data-lucide="image" size="20"></i> Media
+                            </h5>
+
+                            <div class="row g-4 mb-4">
+                                <div class="col-12">
+                                    <label class="form-label fw-medium small text-muted">Upload Photo (Optional)</label>
+                                    <input type="file" name="image" class="form-control form-control-lg" accept=".jpg,.png,.jpeg">
+                                    <div class="form-text">Accepted formats: jpg, png. Max size: 5MB.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer bg-light">
+                            <button type="button" class="btn btn-link text-muted text-decoration-none" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary px-4">Add Item</button>
+                        </div>
+                    </form>
+                </div>
             </div>
-            
-            <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                <div class="modal-body p-4">
-                    
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-6">
-                            <label class="form-label fw-medium small text-muted">Item Name</label>
-                            <input type="text" name="item_name" class="form-control form-control-lg" placeholder="e.g. Blue Umbrella" required>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label class="form-label fw-medium small text-muted">Category</label>
-                            <select name="category" class="form-select form-select-lg" required>
-                                <option value="" selected disabled>Select Category</option>
-                                <option value="electronics">Electronics</option>
-                                <option value="wallet">Wallet/ID</option>
-                                <option value="keys">Keys</option>
-                                <option value="clothing">Clothing</option>
-                                <option value="accessories">Accessories</option>
-                                <option value="other">Other</option>
-                            </select>
-                        </div>
-
-                        <div class="col-12">
-                            <label class="form-label fw-medium small text-muted">Description</label>
-                            <textarea name="description" class="form-control form-control-lg" rows="4" 
-                                placeholder="Describe the item (color, brand, distinguishing marks)..." required></textarea>
-                        </div>
-                    </div>
-
-                    <h5 class="fw-bold mb-4 text-success border-bottom pb-2 mt-5 d-flex align-items-center gap-2">
-                        <i data-lucide="map-pin" size="20"></i> Location & Time
-                    </h5>
-
-                    <div class="row g-4 mb-4">
-                        <div class="col-md-6">
-                            <label class="form-label fw-medium small text-muted">Location</label>
-                            <input type="text" name="location" class="form-control form-control-lg" 
-                                placeholder="e.g. Main Library, Room 304" required>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label fw-medium small text-muted">Date</label>
-                            <input type="date" name="date_found" class="form-control form-control-lg" required>
-                        </div>
-                    </div>
-
-                    <h5 class="fw-bold mb-4 text-success border-bottom pb-2 mt-5 d-flex align-items-center gap-2">
-                        <i data-lucide="image" size="20"></i> Media
-                    </h5>
-
-                    <div class="row g-4 mb-4">
-                        <div class="col-12">
-                            <label class="form-label fw-medium small text-muted">Upload Photo (Optional)</label>
-                            <input type="file" name="image" class="form-control form-control-lg" accept=".jpg,.png,.jpeg">
-                            <div class="form-text">Accepted formats: jpg, png. Max size: 5MB.</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-link text-muted text-decoration-none" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary px-4">Add Item</button>
-                </div>
-            </form>
         </div>
-    </div>
-</div>
+
+        {{-- VIEW MODAL (unchanged) --}}
         <div class="modal fade" id="viewItemModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border-0 shadow-lg">
@@ -294,7 +298,7 @@
                         <div class="p-4">
                             <h4 id="view_name" class="fw-bold mb-1">--</h4>
                             <p id="view_desc" class="text-muted small mb-3">--</p>
-                            
+
                             <div class="row g-3">
                                 <div class="col-6">
                                     <small class="text-muted fw-bold d-block">Category</small>
@@ -322,6 +326,7 @@
             </div>
         </div>
 
+        {{-- EDIT MODAL --}}
         <div class="modal fade" id="editItemModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content border-0 shadow-lg">
@@ -329,11 +334,12 @@
                         <h5 class="modal-title fw-bold">Edit Item Details</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <form action="" method="POST" enctype="multipart/form-data">
+
+                    <form action="{{ route('admin.items.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
                         <input type="hidden" id="edit_item_id" name="item_id">
-                        
+
                         <div class="modal-body p-4">
                             <div class="row g-3">
                                 <div class="col-md-6">
@@ -367,6 +373,16 @@
                                     <label class="form-label text-muted small fw-bold">Description</label>
                                     <textarea id="edit_desc" name="description" class="form-control" rows="3"></textarea>
                                 </div>
+                                <div class="col-12">
+                                    <label class="form-label text-muted small fw-bold">Replace Photo</label>
+                                    <input type="file"
+                                        name="image"
+                                        class="form-control"
+                                        accept=".jpg,.jpeg,.png,.gif">
+                                    <div class="form-text">
+                                        Leave this empty to keep the current image. Accepted: jpg, jpeg, png, gif. Max 2MB.
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="modal-footer bg-light">
@@ -378,6 +394,7 @@
             </div>
         </div>
 
+        {{-- DELETE MODAL --}}
         <div class="modal fade" id="deleteItemModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-sm">
                 <div class="modal-content border-0 shadow-lg">
@@ -387,11 +404,11 @@
                         </div>
                         <h5 class="fw-bold mb-2">Delete Item?</h5>
                         <p class="text-muted small mb-4">
-                            Are you sure you want to delete <strong id="delete_item_name" class="text-dark">this item</strong>? 
+                            Are you sure you want to delete <strong id="delete_item_name" class="text-dark">this item</strong>?
                             This cannot be undone.
                         </p>
                         <div class="d-grid gap-2">
-                            <form action="" method="POST">
+                            <form action="{{ route('admin.items.destroy') }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <input type="hidden" id="delete_item_id_input" name="item_id">
@@ -408,89 +425,86 @@
 @endsection
 
 @section('scripts')
-    <script>
-        // Use a generic base URL for dynamic routing
-        const baseUrl = "{{ url('/') }}"; 
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('itemFiltersForm');
 
-        // 1. Claim Item (The form submission handles the logic now, so the JS alert is removed)
-        // If you need confirmation, use the 'onsubmit' attribute on the form itself.
-        
-        // 2. View Item Details (No changes needed, but added for context)
-        // NOTE: If you had a 'View' button, you'd want to attach this to it. 
-        // Currently, you don't have a specific view button, but let's assume one exists or you reuse a class.
-        // For now, we'll assume the 'View' button is `btn-info` as used in your current JS.
-
-        document.querySelectorAll('.btn-info').forEach(btn => {
-            btn.addEventListener('click', function() {
-                // ... (your existing view item logic remains the same) ...
-                // This logic is purely frontend/data extraction, no routing needed here.
-                // ... (your existing view item logic remains the same) ...
-                new bootstrap.Modal(document.getElementById('viewItemModal')).show();
-            });
+    // 1) Auto-submit dropdown filters on change
+    document.querySelectorAll('#itemFiltersForm .filter-select').forEach(el => {
+        el.addEventListener('change', () => {
+            form.submit();
         });
+    });
 
+    // 2) Search bar: submit only when user presses Enter
+    const searchInput = document.querySelector('input[name="search"][form="itemFiltersForm"]');
+    if (searchInput) {
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                form.submit();
+            }
+        });
+    }
 
-        // 3. Edit Item (Populate Form and Set Form Action URL)
-        document.querySelectorAll('.btn-edit-item').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const itemId = this.getAttribute('data-id');
-                const row = this.closest('tr');
+    // 3) EDIT modal logic (open via JS only)
+    document.querySelectorAll('.btn-edit-item').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const itemId = this.getAttribute('data-id');
+            const row    = this.closest('tr');
 
-                // Set the DYNAMIC action URL for the modal form
-                const form = document.querySelector('#editItemModal form');
-                form.action = `${baseUrl}/manage-item/${itemId}`; // Uses the 'admin.items.update' route URL
+            // Set hidden id for update()
+            document.getElementById('edit_item_id').value = itemId;
 
-                // Extract Data and Populate Form (Your existing logic is good here)
-                const name = row.querySelector('.item-info strong').innerText;
-                const desc = row.querySelector('.item-info .item-desc').innerText;
-                const category = row.querySelector('td[data-label="Category"]').innerText.toLowerCase();
-                const location = row.querySelector('td[data-label="Location"]').innerText.trim().toLowerCase();
-                const status = row.querySelector('td[data-label="Status"]').innerText.trim().toLowerCase();
-                
-                // Populate Form Fields
-                document.getElementById('edit_name').value = name;
-                document.getElementById('edit_desc').value = desc;
-                
-                // Helper to match select options (Your existing helper)
-                const setSelect = (id, val) => {
-                    const sel = document.getElementById(id);
-                    for(let i=0; i<sel.options.length; i++) {
-                        // Use includes() for flexibility with location/category names
-                        if(sel.options[i].value.toLowerCase().includes(val) || sel.options[i].text.toLowerCase().includes(val)) {
-                            sel.selectedIndex = i;
-                            return; // Stop after finding a match
-                        }
+            // Extract row data
+            const name     = row.querySelector('.item-info strong').innerText;
+            const desc     = row.querySelector('.item-info .item-desc').innerText;
+            const category = row.querySelector('td[data-label="Category"]').innerText.toLowerCase();
+            const location = row.querySelector('td[data-label="Location"]').innerText.trim();
+            const status   = row.querySelector('td[data-label="Status"]').innerText.trim().toLowerCase();
+
+            // Populate form fields
+            document.getElementById('edit_name').value     = name;
+            document.getElementById('edit_desc').value     = desc;
+            document.getElementById('edit_location').value = location;
+
+            const setSelect = (id, val) => {
+                const sel = document.getElementById(id);
+                for (let i = 0; i < sel.options.length; i++) {
+                    if (sel.options[i].value.toLowerCase().includes(val.toLowerCase()) ||
+                        sel.options[i].text.toLowerCase().includes(val.toLowerCase())) {
+                        sel.selectedIndex = i;
+                        return;
                     }
-                };
+                }
+            };
 
-                setSelect('edit_category', category);
-                setSelect('edit_location', location);
-                setSelect('edit_status', status);
+            setSelect('edit_category', category);
+            setSelect('edit_status', status);
 
-                new bootstrap.Modal(document.getElementById('editItemModal')).show();
-            });
+            // Use a single Bootstrap modal instance
+            const editModalEl = document.getElementById('editItemModal');
+            const editModal   = bootstrap.Modal.getOrCreateInstance(editModalEl);
+            editModal.show();
         });
+    });
 
-        // 4. Delete Item (Set Form Action URL)
-        document.querySelectorAll('.btn-delete-item').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const itemId = this.getAttribute('data-id');
-                const row = this.closest('tr');
-                const name = row.querySelector('.item-info strong').innerText;
+    // 4) DELETE modal logic (open via JS only)
+    document.querySelectorAll('.btn-delete-item').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const itemId = this.getAttribute('data-id');
+            const row    = this.closest('tr');
+            const name   = row.querySelector('.item-info strong').innerText;
 
-                // Set the DYNAMIC action URL for the modal form
-                const form = document.querySelector('#deleteItemModal form');
-                form.action = `${baseUrl}/manage-item/${itemId}`; // Uses the 'admin.items.destroy' route URL
+            // Set hidden id for destroy()
+            document.getElementById('delete_item_id_input').value = itemId;
+            document.getElementById('delete_item_name').innerText = name;
 
-                document.getElementById('delete_item_name').innerText = name;
-                
-                new bootstrap.Modal(document.getElementById('deleteItemModal')).show();
-            });
+            const deleteModalEl = document.getElementById('deleteItemModal');
+            const deleteModal   = bootstrap.Modal.getOrCreateInstance(deleteModalEl);
+            deleteModal.show();
         });
-
-        // Reset Filters Button (Existing logic)
-        document.querySelector('.btn-reset').addEventListener('click', function () {
-            document.querySelectorAll('.filter-select').forEach(select => select.value = '');
-        });
-    </script>
+    });
+});
+</script>
 @endsection

@@ -23,10 +23,9 @@
                         <a href="{{ url('/search') }}" class="btn btn-primary-custom btn-lg">
                             <i data-lucide="search" class="me-2 inline-block"></i> Search Found Items
                         </a>
-                        <button class="btn btn-outline-custom btn-lg" data-bs-toggle="modal"
-                            data-bs-target="#reportItemModal">
-                            Report Lost Item
-                        </button>
+                    <button class="btn btn-outline-custom btn-lg" onclick="window.location='{{ route('report') }}'">
+                        Report Lost Item
+                    </button>
                     </div>
                 </div>
                 <div class="col-lg-6 order-1 order-lg-2 text-center">
