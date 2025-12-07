@@ -65,10 +65,16 @@
                         <span>Appointments</span>
                     </a>
                 </li>
+                
+                <li class="mt-auto">
+                    <a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
             </ul>
         </nav>
     </aside>
-
     <!-- Sidebar Overlay (Mobile) -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
