@@ -13,7 +13,7 @@ Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/register', [LoginController::class, 'showRegistrationForm'])->name('register');
 
 // Auth actions
-Route::post('/login', [LoginController::class, 'login'])->name('login.perform');
+Route::post('/', [LoginController::class, 'login'])->name('login.perform');
 Route::post('/register', [LoginController::class, 'register'])->name('register.perform');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 

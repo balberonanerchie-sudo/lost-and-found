@@ -11,7 +11,6 @@
         <div class="page-header">
             <div>
                 <h3>Manage Items</h3>
-                <p>Track and manage all lost and found items in the system</p>
             </div>
             <button class="btn-primary" data-bs-toggle="modal" data-bs-target="#addItemModal">
                 <i class="fas fa-plus"></i>
@@ -165,63 +164,99 @@
             </div>
         </div>
 
-        <div class="modal fade" id="addItemModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content border-0 shadow-lg">
-                    <div class="modal-header bg-light">
-                        <h5 class="modal-title fw-bold">Add New Item</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form action="" method="POST" enctype="multipart/form-data">
-                        @csrf
-                        <div class="modal-body p-4">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label text-muted small fw-bold">Item Name</label>
-                                    <input type="text" name="item_name" class="form-control" placeholder="e.g. Blue Umbrella">
+       <div class="modal fade" id="addItemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content border-0 shadow-lg">
+            <div class="modal-header bg-light">
+                <h5 class="modal-title fw-bold">Add New Item</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            
+            <form action="{{ url('/items/store') }}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="modal-body p-4">
+                    
+                    <div class="row g-4 mb-4">
+                        <div class="col-12">
+                            <div class="d-flex gap-4">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="type" id="typeLost" value="lost" checked>
+                                    <label class="form-check-label fw-medium" for="typeLost">Lost Item</label>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="form-label text-muted small fw-bold">Category</label>
-                                    <select name="category" class="form-select">
-                                        <option value="electronics">Electronics</option>
-                                        <option value="accessories">Accessories</option>
-                                        <option value="documents">Documents</option>
-                                        <option value="clothing">Clothing</option>
-                                        <option value="others">Others</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label text-muted small fw-bold">Location Found</label>
-                                    <select name="location" class="form-select">
-                                        <option value="library">Library</option>
-                                        <option value="cafeteria">Cafeteria</option>
-                                        <option value="gate">Gate Area</option>
-                                        <option value="classroom">Classroom</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label text-muted small fw-bold">Date Found</label>
-                                    <input type="date" name="date_found" class="form-control">
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label text-muted small fw-bold">Description</label>
-                                    <textarea name="description" class="form-control" rows="3" placeholder="Describe the item..."></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <label class="form-label text-muted small fw-bold">Upload Image</label>
-                                    <input type="file" name="image" class="form-control" accept="image/*">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="type" id="typeFound" value="found">
+                                    <label class="form-check-label fw-medium" for="typeFound">Found Item</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer bg-light">
-                            <button type="button" class="btn btn-link text-muted text-decoration-none" data-bs-dismiss="modal">Cancel</button>
-                            <button type="submit" class="btn btn-primary px-4">Add Item</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
 
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium small text-muted">Item Name</label>
+                            <input type="text" name="item_name" class="form-control form-control-lg" placeholder="e.g. Blue Umbrella" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium small text-muted">Category</label>
+                            <select name="category" class="form-select form-select-lg" required>
+                                <option value="" selected disabled>Select Category</option>
+                                <option value="electronics">Electronics</option>
+                                <option value="wallet">Wallet/ID</option>
+                                <option value="keys">Keys</option>
+                                <option value="clothing">Clothing</option>
+                                <option value="accessories">Accessories</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-medium small text-muted">Description</label>
+                            <textarea name="description" class="form-control form-control-lg" rows="4" 
+                                placeholder="Describe the item (color, brand, distinguishing marks)..." required></textarea>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold mb-4 text-success border-bottom pb-2 mt-5 d-flex align-items-center gap-2">
+                        <i data-lucide="map-pin" size="20"></i> Location & Time
+                    </h5>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium small text-muted">Location</label>
+                            <input type="text" name="location" class="form-control form-control-lg" 
+                                placeholder="e.g. Main Library, Room 304" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label fw-medium small text-muted">Date</label>
+                            <input type="date" name="date_found" class="form-control form-control-lg" required>
+                        </div>
+                    </div>
+
+                    <h5 class="fw-bold mb-4 text-success border-bottom pb-2 mt-5 d-flex align-items-center gap-2">
+                        <i data-lucide="image" size="20"></i> Media & Contact
+                    </h5>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-12">
+                            <label class="form-label fw-medium small text-muted">Upload Photo (Optional)</label>
+                            <input type="file" name="image" class="form-control form-control-lg" accept=".jpg,.png,.jpeg">
+                            <div class="form-text">Accepted formats: jpg, png. Max size: 5MB.</div>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label fw-medium small text-muted">Your Email Address</label>
+                            <input type="email" name="email" class="form-control form-control-lg" placeholder="you@example.com" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-link text-muted text-decoration-none" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4">Add Item</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
         <div class="modal fade" id="viewItemModal" tabindex="-1" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content border-0 shadow-lg">

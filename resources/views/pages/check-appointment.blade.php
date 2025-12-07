@@ -11,7 +11,6 @@
     <div class="page-header">
         <div>
             <h3>Appointments</h3>
-            <p>Manage and review all appointment requests</p>
         </div>
         <button class="btn-primary" data-bs-toggle="modal" data-bs-target="#addAppointmentModal">
             <i class="fas fa-plus"></i>

@@ -11,7 +11,6 @@
     <div class="page-header">
         <div>
             <h3>Manage Users</h3>
-            <p>Manage all users, roles, and permissions in the system</p>
         </div>
         <button class="btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
             <i class="fas fa-plus"></i>
