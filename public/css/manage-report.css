@@ -411,7 +411,6 @@
         font-size: 12px;
     }
 }
-<<<<<<< Updated upstream
     .desc-cell {
         max-width: 200px;
         white-space: nowrap;
@@ -421,16 +420,6 @@
      .table-responsive {
         max-height: 70vh;
         overflow-y: auto;
+
         }
-=======
- .desc-cell {
-            max-width: 150px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .table-responsive {
-            max-height: 600px;
-            overflow-y: auto;
-        }
->>>>>>> Stashed changes
+ 

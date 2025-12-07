@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PageController;
@@ -7,12 +6,10 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ManageItemController;
 use App\Http\Controllers\ManageUserController;
 use App\Http\Controllers\CheckAppointmentController;
-<<<<<<< Updated upstream
+use App\Http\Controllers\ManageReportsController;
 use App\Http\Controllers\LostReportController;
 use App\Http\Controllers\FoundReportController;
-=======
-use App\Http\Controllers\ManageReportsController;
->>>>>>> Stashed changes
+
 
 // Guest: show login/register page
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
