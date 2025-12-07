@@ -2,6 +2,7 @@
 
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/AdminDashboard.css') }}">
+
 @endsection
 
 @section('content')
@@ -71,15 +72,15 @@
         </div>
 
         <div class="graph-section" style="margin-top: 2rem; margin-bottom: 2rem;">
-            <leads-chart-card 
-                total-reports="248" 
-                :percentage-change="12" 
-                lost-count="150" 
+            <leads-chart-card
+                total-reports="248"
+                :percentage-change="12"
+                lost-count="150"
                 found-count="98">
             </leads-chart-card>
         </div>
 
-       
+
         </div>
     </main>
 @endsection

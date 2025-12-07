@@ -16,7 +16,7 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
-     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @yield('styles')
 </head>
 
@@ -24,7 +24,7 @@
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-brand">
-            <a href="/" class="brand-content">
+            <a href="{{ route('admin.dashboard') }}" class="brand-content">
                 <div class="brand-logo">
                     <img src="{{ asset('img/logo1.png') }}" alt="Lost & Found Logo">
                 </div>
@@ -38,25 +38,29 @@
         <nav class="sidebar-menu">
             <ul>
                 <li>
-                    <a href="/admin-dashboard" class="nav-link {{ request()->is('admin-dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <i class="fas fa-th-large"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/manage-item" class="nav-link {{ request()->is('manage-item') ? 'active' : '' }}">
+                    <a href="{{ route('admin.items') }}"
+                        class="nav-link {{ request()->routeIs('admin.items') ? 'active' : '' }}">
                         <i class="fas fa-box"></i>
                         <span>Manage Items</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/manage-user" class="nav-link {{ request()->is('manage-user') ? 'active' : '' }}">
+                    <a href="{{ route('admin.users') }}"
+                        class="nav-link {{ request()->routeIs('admin.users') ? 'active' : '' }}">
                         <i class="fas fa-users"></i>
                         <span>Manage Users</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/appointments" class="nav-link {{ request()->is('appointments') ? 'active' : '' }}">
+                    <a href="{{ route('admin.appointments') }}"
+                        class="nav-link {{ request()->routeIs('admin.appointments') ? 'active' : '' }}">
                         <i class="fas fa-calendar-check"></i>
                         <span>Appointments</span>
                     </a>
@@ -69,9 +73,10 @@
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <div class="main-wrapper" id="mainWrapper">
-    <div id="app"> @yield('content')
+        <div id="app">
+            @yield('content')
+        </div>
     </div>
-</div>
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
