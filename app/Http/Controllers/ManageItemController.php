@@ -14,7 +14,7 @@ class ManageItemController extends Controller
      */
     public function index()
     {
-    $items = Item::with('owner')->orderBy('created_at', 'desc')->get();
+    $items = Item::with('owner')->orderBy('created_at', 'desc')->paginate(15);
 
     return view('pages.manage-item', compact('items'));
     }
@@ -62,7 +62,8 @@ class ManageItemController extends Controller
     public function update(Request $request, Item $item)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'item_name' => 'required|string|max:255',
+            'category' => 'required|string',
             'location' => 'required|string|max:255',
             'date_found' => 'required|date',
             'description' => 'nullable|string|max:1000',
@@ -152,5 +153,13 @@ class ManageItemController extends Controller
         $items = $query->orderBy('created_at', 'desc')->paginate(15);
 
         return view('pages.manage-item', compact('items'));
+    }
+    public function markClaimed(Item $item)
+    {
+        // Update the status to 'claimed'
+        $item->update(['status' => 'claimed']); 
+        
+        // Redirect back to the manage item view with a success message
+        return redirect()->route('admin.items')->with('success', 'Item ' . $item->item_name . ' marked as Claimed.');
     }
 }

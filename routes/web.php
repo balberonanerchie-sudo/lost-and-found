@@ -29,7 +29,15 @@ Route::middleware('auth')->group(function () {
     // Admin pages
     Route::prefix('admin')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
+ 
+        // Item management action routes      
+        Route::delete('/manage-item/{item}', [ManageItemController::class, 'destroy'])->name('admin.items.destroy');
+
+        Route::put('/manage-item/{item}', [ManageItemController::class, 'update'])->name('admin.items.update');
+        Route::patch('/manage-item/{item}/claim', [ManageItemController::class, 'markClaimed'])->name('admin.items.claim');
+
         Route::get('/manage-item', [ManageItemController::class, 'index'])->name('admin.items');
+
         Route::get('/manage-user', [ManageUserController::class, 'index'])->name('admin.users');
         Route::get('/appointments', [CheckAppointmentController::class, 'index'])->name('admin.appointments');
     });
@@ -37,4 +45,3 @@ Route::middleware('auth')->group(function () {
 
 //Item management routes
 Route::post('/items/store', [ManageItemController::class, 'store'])->name('items.store');
-
