@@ -10,15 +10,22 @@ use Illuminate\Support\Facades\Storage;
 class ManageItemController extends Controller
 {
     /**
-     * Display a listing of items
+     * Display a listing of items for Admin
      */
     public function index()
     {
-        $items = Item::with('owner')
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
+    $items = Item::with('owner')->orderBy('created_at', 'desc')->get();
 
-        return view('pages.manage-item', compact('items'));
+    return view('pages.manage-item', compact('items'));
+    }
+
+    /**
+     * Display a listing of items for User
+     */
+    public function userIndex()
+    {
+        $items = Item::latest()->orderBy('created_at', 'desc')->paginate(15);
+        return view('pages.studSearch', compact('items'));
     }
 
     /**
@@ -27,13 +34,16 @@ class ManageItemController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'item_name' => 'required|string|max:255',
+            'category' => 'required|string',
+            'description' => 'nullable|string|max:1000',
             'location' => 'required|string|max:255',
             'date_found' => 'required|date',
-            'description' => 'nullable|string|max:1000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'status' => 'required|in:unclaimed,claimed,returned'
         ]);
+
+        // Default status
+        $validated['status'] = 'unclaimed';
 
         // Handle image upload
         if ($request->hasFile('image')) {

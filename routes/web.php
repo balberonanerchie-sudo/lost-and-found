@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
 
     // Student pages
     Route::get('/home', [PageController::class, 'welcome'])->name('home');
-    Route::get('/search', [PageController::class, 'search'])->name('search');
+    Route::get('/search', [ManageItemController::class, 'userIndex'])->name('search');
     Route::get('/book-appointment', [PageController::class, 'bookAppointment'])->name('appointment');
     Route::get('/report-item', [PageController::class, 'reportItem'])->name('report');
 
@@ -34,3 +34,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/appointments', [CheckAppointmentController::class, 'index'])->name('admin.appointments');
     });
 });
+
+//Item management routes
+Route::post('/items/store', [ManageItemController::class, 'store'])->name('items.store');
+

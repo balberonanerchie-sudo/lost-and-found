@@ -44,35 +44,62 @@
             </div>
 
             <div class="row g-4">
-                @for($i = 0; $i < 6; $i++)
-                    <div class="col-md-6 col-lg-4">
-                        <div class="custom-card h-100 d-flex flex-column shadow-sm border rounded-3 overflow-hidden">
-                            <div class="card-img-placeholder bg-light d-flex align-items-center justify-content-center"
-                                style="height: 200px;">
+            @foreach($items as $item)
+                <div class="col-md-6 col-lg-4">
+                    <div class="custom-card h-100 d-flex flex-column shadow-sm border rounded-3 overflow-hidden">
+
+                        {{-- Image --}}
+                        <div class="card-img-placeholder bg-light d-flex align-items-center justify-content-center"
+                            style="height: 200px;">
+                            @if($item->image)
+                                <img src="{{ asset('storage/' . $item->image) }}" 
+                                    alt="{{ $item->item_name }}" 
+                                    class="img-fluid h-100 w-100 object-fit-cover">
+                            @else
                                 <i data-lucide="image" size="48" class="opacity-50"></i>
-                            </div>
-                            <div class="p-4 flex-grow-1 d-flex flex-column">
-                                <div class="d-flex justify-content-between align-items-start mb-2">
-                                    <span class="badge bg-success bg-opacity-10 text-success">Electronics</span>
-                                    <small class="text-muted">2 days ago</small>
-                                </div>
-                                <h5 class="fw-bold text-dark">iPhone 13 Pro Max</h5>
-                                <p class="text-muted small mb-3">Found near the cafeteria entrance. Has a blue silicone case.
-                                </p>
+                            @endif
+                        </div>
 
-                                <div class="mt-auto pt-3 border-top d-flex align-items-center gap-2 text-muted small">
-                                    <i data-lucide="map-pin" size="14"></i>
-                                    <span>Main Cafeteria</span>
-                                </div>
+                        <div class="p-4 flex-grow-1 d-flex flex-column">
 
-                                <a href="{{ url('/book-appointment') }}" class="btn btn-primary w-100 mt-3 btn-sm">
-                                    Claim
-                                </a>
+                            {{-- Category + Timestamp --}}
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="badge bg-success bg-opacity-10 text-success">
+                                    {{ $item->category }}
+                                </span>
+                                <small class="text-muted">
+                                    {{ $item->created_at->diffForHumans() }}
+                                </small>
                             </div>
+
+                            {{-- Title --}}
+                            <h5 class="fw-bold text-dark">{{ $item->item_name }}</h5>
+
+                            {{-- Description --}}
+                            <p class="text-muted small mb-3">
+                                {{ Str::limit($item->description, 100) }}
+                            </p>
+
+                            {{-- Location --}}
+                            <div class="mt-auto pt-3 border-top d-flex align-items-center gap-2 text-muted small">
+                                <i data-lucide="map-pin" size="14"></i>
+                                <span>{{ $item->location }}</span>
+                            </div>
+
+                            {{-- Claim Button --}}
+                            <a href="{{ url('/book-appointment/' . $item->id) }}" 
+                            class="btn btn-primary w-100 mt-3 btn-sm">
+                                Claim
+                            </a>
                         </div>
                     </div>
-                @endfor
-            </div>
+                </div>
+            @endforeach
+        </div>
+
+        {{-- Pagination --}}
+        <div class="d-flex justify-content-center mt-4">
+            {{ $items->links() }}
         </div>
 
         <footer class="bg-dark text-white py-5 mt-auto w-100">

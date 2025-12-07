@@ -87,67 +87,92 @@
                         </tr>
                     </thead>
                     <tbody>
+                    @foreach ($items as $item)
                         <tr>
+                            <!-- IMAGE -->
                             <td data-label="Item Image">
                                 <div class="item-image">
-                                    <img src="{{ asset('img/items/wallet.jpg') }}" alt="Wallet">
+                                    @if ($item->image)
+                                        <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}">
+                                    @else
+                                        <img src="{{ asset('img/default.png') }}" alt="No Image">
+                                    @endif
                                 </div>
                             </td>
+
+                            <!-- NAME + DESCRIPTION -->
                             <td data-label="Item Name">
                                 <div class="item-info">
-                                    <strong>Black Wallet</strong>
-                                    <span class="item-desc">Leather wallet with cards</span>
+                                    <strong>{{ $item->name }}</strong>
+                                    <span class="item-desc">{{ $item->description }}</span>
                                 </div>
                             </td>
-                            <td data-label="Category">Accessories</td>
+
+                            <!-- CATEGORY -->
+                            <td data-label="Category">{{ ucfirst($item->category) }}</td>
+
+                            <!-- LOCATION -->
                             <td data-label="Location">
                                 <div class="location-tag">
-                                    <i class="fas fa-map-marker-alt"></i> Library
+                                    <i class="fas fa-map-marker-alt"></i> {{ $item->location }}
                                 </div>
                             </td>
-                            <td data-label="Date Reported">Oct 10, 2025</td>
-                            <td data-label="Status"><span class="badge warning">Unclaimed</span></td>
-                            <td data-label="Owner">-</td>
+
+                            <!-- DATE -->
+                            <td data-label="Date Reported">
+                                {{ \Carbon\Carbon::parse($item->date_found)->format('M d, Y') }}
+                            </td>
+
+                            <!-- STATUS -->
+                            <td data-label="Status">
+                                @php
+                                    $badgeClass = match($item->status) {
+                                        'unclaimed' => 'warning',
+                                        'claimed' => 'success',
+                                        'returned' => 'info',
+                                        default => 'secondary'
+                                    };
+                                @endphp
+
+                                <span class="badge {{ $badgeClass }}">
+                                    {{ ucfirst($item->status) }}
+                                </span>
+                            </td>
+
+                            <!-- OWNER -->
+                            <td data-label="Owner">
+                                {{ $item->owner ? $item->owner->name : '-' }}
+                            </td>
+
+                            <!-- ACTIONS -->
                             <td data-label="Actions">
                                 <div class="action-btns">
-                                    <button class="btn-sm btn-claim" title="Mark as Claimed"><i class="fas fa-check"></i></button>
-                                    <button class="btn-sm btn-info" title="View Details"><i class="fas fa-eye"></i></button>
-                                    <button class="btn-sm btn-success" title="Edit"><i class="fas fa-edit"></i></button>
-                                    <button class="btn-sm btn-danger" title="Delete"><i class="fas fa-trash"></i></button>
+                                    <button class="btn-sm btn-claim" title="Mark as Claimed">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                    <button class="btn-sm btn-info" title="View Details">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <button class="btn-sm btn-success" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="btn-sm btn-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
                                 </div>
                             </td>
                         </tr>
+                    @endforeach
+
+                    @if ($items->isEmpty())
                         <tr>
-                            <td data-label="Item Image">
-                                <div class="item-image">
-                                    <img src="{{ asset('img/items/phone.jpg') }}" alt="Phone">
-                                </div>
-                            </td>
-                            <td data-label="Item Name">
-                                <div class="item-info">
-                                    <strong>iPhone 13</strong>
-                                    <span class="item-desc">Black iPhone with case</span>
-                                </div>
-                            </td>
-                            <td data-label="Category">Electronics</td>
-                            <td data-label="Location">
-                                <div class="location-tag">
-                                    <i class="fas fa-map-marker-alt"></i> Cafeteria
-                                </div>
-                            </td>
-                            <td data-label="Date Reported">Oct 15, 2025</td>
-                            <td data-label="Status"><span class="badge info">Pending</span></td>
-                            <td data-label="Owner">Maria Cruz</td>
-                            <td data-label="Actions">
-                                <div class="action-btns">
-                                    <button class="btn-sm btn-claim" title="Mark as Claimed"><i class="fas fa-check"></i></button>
-                                    <button class="btn-sm btn-info" title="View Details"><i class="fas fa-eye"></i></button>
-                                    <button class="btn-sm btn-success" title="Edit"><i class="fas fa-edit"></i></button>
-                                    <button class="btn-sm btn-danger" title="Delete"><i class="fas fa-trash"></i></button>
-                                </div>
+                            <td colspan="8" class="text-center py-4 text-muted">
+                                No items found.
                             </td>
                         </tr>
+                    @endif
                     </tbody>
+
                 </table>
             </div>
 
@@ -172,24 +197,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             
-            <form action="{{ url('/items/store') }}" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('items.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="modal-body p-4">
                     
                     <div class="row g-4 mb-4">
-                        <div class="col-12">
-                            <div class="d-flex gap-4">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="type" id="typeLost" value="lost" checked>
-                                    <label class="form-check-label fw-medium" for="typeLost">Lost Item</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="type" id="typeFound" value="found">
-                                    <label class="form-check-label fw-medium" for="typeFound">Found Item</label>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="col-md-6">
                             <label class="form-label fw-medium small text-muted">Item Name</label>
                             <input type="text" name="item_name" class="form-control form-control-lg" placeholder="e.g. Blue Umbrella" required>
@@ -232,7 +244,7 @@
                     </div>
 
                     <h5 class="fw-bold mb-4 text-success border-bottom pb-2 mt-5 d-flex align-items-center gap-2">
-                        <i data-lucide="image" size="20"></i> Media & Contact
+                        <i data-lucide="image" size="20"></i> Media
                     </h5>
 
                     <div class="row g-4 mb-4">
@@ -240,11 +252,6 @@
                             <label class="form-label fw-medium small text-muted">Upload Photo (Optional)</label>
                             <input type="file" name="image" class="form-control form-control-lg" accept=".jpg,.png,.jpeg">
                             <div class="form-text">Accepted formats: jpg, png. Max size: 5MB.</div>
-                        </div>
-
-                        <div class="col-12">
-                            <label class="form-label fw-medium small text-muted">Your Email Address</label>
-                            <input type="email" name="email" class="form-control form-control-lg" placeholder="you@example.com" required>
                         </div>
                     </div>
                 </div>
@@ -321,9 +328,10 @@
                                     <label class="form-label text-muted small fw-bold">Category</label>
                                     <select id="edit_category" name="category" class="form-select">
                                         <option value="electronics">Electronics</option>
-                                        <option value="accessories">Accessories</option>
-                                        <option value="documents">Documents</option>
+                                        <option value="wallet/ID">Wallet/ID</option>
+                                        <option value="keys">Keys</option>
                                         <option value="clothing">Clothing</option>
+                                        <option value="accessories">Accessories</option>
                                         <option value="others">Others</option>
                                     </select>
                                 </div>
