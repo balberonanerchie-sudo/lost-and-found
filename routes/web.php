@@ -6,7 +6,7 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ManageItemController;
 use App\Http\Controllers\ManageUserController;
 use App\Http\Controllers\CheckAppointmentController;
-use App\Http\Controllers\ManageReportsController;
+
 use App\Http\Controllers\LostReportController;
 use App\Http\Controllers\FoundReportController;
 
@@ -37,6 +37,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/lost-reports', [LostReportController::class, 'index'])->name('admin.lostReports');
         Route::get('/found-reports', [FoundReportController::class, 'index'])->name('admin.foundReports');
         Route::get('/appointments', [CheckAppointmentController::class, 'index'])->name('admin.appointments');
-        Route::get('/manage-reports', [ManageReportsController::class, 'index'])->name('admin.reports');
+
     });
 });
