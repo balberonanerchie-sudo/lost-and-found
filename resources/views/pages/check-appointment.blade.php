@@ -186,9 +186,6 @@
                     <i class="fas fa-search"></i>
                     <input type="text" placeholder="Search appointments...">
                 </div>
-                <button class="btn-export">
-                    <i class="fas fa-download"></i> Export
-                </button>
             </div>
         </div>
         <div class="table-responsive">
