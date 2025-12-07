@@ -7,8 +7,12 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\ManageItemController;
 use App\Http\Controllers\ManageUserController;
 use App\Http\Controllers\CheckAppointmentController;
+<<<<<<< Updated upstream
 use App\Http\Controllers\LostReportController;
 use App\Http\Controllers\FoundReportController;
+=======
+use App\Http\Controllers\ManageReportsController;
+>>>>>>> Stashed changes
 
 // Guest: show login/register page
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
@@ -36,5 +40,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/lost-reports', [LostReportController::class, 'index'])->name('admin.lostReports');
         Route::get('/found-reports', [FoundReportController::class, 'index'])->name('admin.foundReports');
         Route::get('/appointments', [CheckAppointmentController::class, 'index'])->name('admin.appointments');
+        Route::get('/manage-reports', [ManageReportsController::class, 'index'])->name('admin.reports');
     });
 });

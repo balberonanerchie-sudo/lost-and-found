@@ -11,10 +11,14 @@ class Item extends Model
 
     protected $fillable = [
         'name',
+        'type',           // Added
+        'category',       // Added
         'location',
         'date_found',
+        'description',    // Added
         'image',
         'status',
+        'reporter_email', // Added
         'owner_id',
     ];
 

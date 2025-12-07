@@ -9,9 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ManageItemController extends Controller
 {
-    /**
-     * Display a listing of items
-     */
+   
     public function index()
     {
         $items = Item::with('owner')
@@ -21,9 +19,6 @@ class ManageItemController extends Controller
         return view('pages.manage-item', compact('items'));
     }
 
-    /**
-     * Store a newly created item
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([

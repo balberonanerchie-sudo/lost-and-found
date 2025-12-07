@@ -59,6 +59,7 @@
                     </a>
                 </li>
                 <li>
+<<<<<<< Updated upstream
                     <a href="{{ route('admin.lostReports') }}" 
                         class="nav-link {{ request()->routeIs('admin.lostReports') ? 'active' : '' }}">
                         <i class="fas fa-search-minus"></i>
@@ -72,6 +73,15 @@
                         <span>Found Reports</span>
                     </a>
                 <li>
+=======
+                     <a href="{{ route('admin.reports') }}" 
+                     class="nav-link {{ request()->routeIs('admin.reports') ? 'active' : '' }}">
+                    <i class="fas fa-file-alt"></i> 
+                    <span>Manage Reports</span>
+                </a>
+                </li>
+                <li>
+>>>>>>> Stashed changes
                     <a href="{{ route('admin.appointments') }}"
                         class="nav-link {{ request()->routeIs('admin.appointments') ? 'active' : '' }}">
                         <i class="fas fa-calendar-check"></i>
