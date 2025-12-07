@@ -39,8 +39,6 @@
             </div>
 
             <div class="modal-footer d-flex justify-content-between">
-                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-
                 <form action="{{ route('logout') }}" method="POST" class="m-0">
                     @csrf
                     <button type="submit" class="btn btn-danger btn-sm">

@@ -20,9 +20,11 @@ class DatabaseSeeder extends Seeder
         User::updateOrCreate(
             ['email' => 'admin@wefind.com'],
             [
-                'name' => 'Admin User',
-                'password' => Hash::make('password123'),
-                'role' => 'admin',
+                'name'       => 'Admin User',
+                'password'   => Hash::make('password123'),
+                'role'       => 'admin',
+                'status'     => 'active',          // new column
+                'department' => 'Administration',  // new column
             ]
         );
     }

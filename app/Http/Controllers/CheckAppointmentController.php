@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 class CheckAppointmentController extends Controller
 {
     /**
-     * Display a listing of appointments
+     * Admin: list all appointments (with filters/pagination).
      */
     public function index()
     {
@@ -23,17 +23,31 @@ class CheckAppointmentController extends Controller
     }
 
     /**
-     * Store a newly created appointment
+     * Student: read-only list of this user's appointments.
+     */
+    public function studentIndex()
+    {
+        $appointments = Appointment::with('item')
+            ->where('user_id', auth()->id())
+            ->orderBy('date', 'asc')
+            ->orderBy('time', 'asc')
+            ->paginate(10);
+
+        return view('pages.studAppointmentsRead', compact('appointments'));
+    }
+
+    /**
+     * Store a newly created appointment.
      */
     public function store(Request $request)
     {
         $validated = $request->validate([
             'user_id' => 'required|exists:users,id',
             'item_id' => 'required|exists:items,id',
-            'date' => 'required|date|after_or_equal:today',
-            'time' => 'required|date_format:H:i',
-            'notes' => 'nullable|string|max:1000',
-            'status' => 'nullable|in:pending,confirmed,completed,cancelled'
+            'date'    => 'required|date|after_or_equal:today',
+            'time'    => 'required|date_format:H:i',
+            'notes'   => 'nullable|string|max:1000',
+            'status'  => 'nullable|in:pending,confirmed,completed,cancelled',
         ]);
 
         // Default status to pending if not provided
@@ -46,15 +60,15 @@ class CheckAppointmentController extends Controller
     }
 
     /**
-     * Update the specified appointment
+     * Update the specified appointment (admin).
      */
     public function update(Request $request, Appointment $appointment)
     {
         $validated = $request->validate([
-            'date' => 'required|date',
-            'time' => 'required|date_format:H:i',
-            'notes' => 'nullable|string|max:1000',
-            'status' => 'required|in:pending,confirmed,completed,cancelled'
+            'date'   => 'required|date',
+            'time'   => 'required|date_format:H:i',
+            'notes'  => 'nullable|string|max:1000',
+            'status' => 'required|in:pending,confirmed,completed,cancelled',
         ]);
 
         $appointment->update($validated);
@@ -64,7 +78,7 @@ class CheckAppointmentController extends Controller
     }
 
     /**
-     * Remove the specified appointment
+     * Remove the specified appointment (admin).
      */
     public function destroy(Appointment $appointment)
     {
@@ -75,50 +89,54 @@ class CheckAppointmentController extends Controller
     }
 
     /**
-     * Update appointment status
+     * Update appointment status (admin, often via AJAX).
      */
     public function updateStatus(Request $request, Appointment $appointment)
     {
         $validated = $request->validate([
-            'status' => 'required|in:pending,confirmed,completed,cancelled'
+            'status' => 'required|in:pending,confirmed,completed,cancelled',
         ]);
 
         $appointment->update($validated);
 
         // If appointment is completed, mark item as claimed
-        if ($validated['status'] === 'completed') {
+        if ($validated['status'] === 'completed' && $appointment->item) {
             $appointment->item->update([
-                'status' => 'claimed',
-                'owner_id' => $appointment->user_id
+                'status'   => 'claimed',
+                'owner_id' => $appointment->user_id,
             ]);
         }
 
         return response()->json([
-            'success' => true,
-            'message' => 'Appointment status updated successfully!',
-            'appointment' => $appointment->load(['user', 'item'])
+            'success'     => true,
+            'message'     => 'Appointment status updated successfully!',
+            'appointment' => $appointment->load(['user', 'item']),
         ]);
     }
 
     /**
-     * Get appointments for calendar (API endpoint)
+     * Get appointments for calendar (API endpoint).
      */
     public function calendar()
     {
         $appointments = Appointment::with(['user', 'item'])
             ->get()
             ->map(function ($appointment) {
+                $itemName = $appointment->item->name
+                    ?? $appointment->item->item_name
+                    ?? 'Item';
+
                 return [
-                    'id' => $appointment->id,
-                    'title' => $appointment->item->name . ' - ' . $appointment->user->name,
-                    'start' => $appointment->date . 'T' . $appointment->time,
-                    'status' => $appointment->status,
-                    'className' => 'fc-event-' . $appointment->status,
+                    'id'         => $appointment->id,
+                    'title'      => $itemName . ' - ' . $appointment->user->name,
+                    'start'      => $appointment->date . 'T' . $appointment->time,
+                    'status'     => $appointment->status,
+                    'className'  => 'fc-event-' . $appointment->status,
                     'extendedProps' => [
-                        'user' => $appointment->user->name,
-                        'item' => $appointment->item->name,
-                        'notes' => $appointment->notes
-                    ]
+                        'user'  => $appointment->user->name,
+                        'item'  => $itemName,
+                        'notes' => $appointment->notes,
+                    ],
                 ];
             });
 
@@ -126,7 +144,7 @@ class CheckAppointmentController extends Controller
     }
 
     /**
-     * Search appointments
+     * Admin search/filter appointments.
      */
     public function search(Request $request)
     {
@@ -134,12 +152,13 @@ class CheckAppointmentController extends Controller
 
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
-                $q->whereHas('user', function($userQuery) use ($search) {
+
+            $query->where(function ($q) use ($search) {
+                $q->whereHas('user', function ($userQuery) use ($search) {
                     $userQuery->where('name', 'like', "%{$search}%");
-                })
-                ->orWhereHas('item', function($itemQuery) use ($search) {
-                    $itemQuery->where('name', 'like', "%{$search}%");
+                })->orWhereHas('item', function ($itemQuery) use ($search) {
+                    $itemQuery->where('name', 'like', "%{$search}%")
+                              ->orWhere('item_name', 'like', "%{$search}%");
                 });
             });
         }
@@ -156,7 +175,8 @@ class CheckAppointmentController extends Controller
             $query->whereDate('date', '<=', $request->date_to);
         }
 
-        $appointments = $query->orderBy('date', 'desc')
+        $appointments = $query
+            ->orderBy('date', 'desc')
             ->orderBy('time', 'desc')
             ->paginate(15);
 

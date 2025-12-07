@@ -12,9 +12,11 @@ class Appointment extends Model
     protected $fillable = [
         'user_id',
         'item_id',
+        'type',      // turnover / claim
         'date',
         'time',
         'status',
+        'notes',
     ];
 
     public function user()

@@ -26,9 +26,9 @@ class PageController extends Controller
     /**
      * Book an appointment to claim an item
      */
-    public function bookAppointment()
+    public function readAppointment()
     {
-        return view('pages.studAppointment');
+        return view('pages.studAppointmentsRead');
     }
 
     /**

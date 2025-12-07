@@ -21,7 +21,6 @@
 </head>
 
 <body>
-
     <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
         <div class="container-lg">
             <a class="navbar-brand d-flex align-items-center gap-2" href="{{ route('home') }}">
@@ -47,7 +46,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link nav-link-custom {{ request()->routeIs('appointment') ? 'active' : '' }}"
-                            href="{{ route('appointment') }}">Appointments</a>
+                            href="{{ route('student.appointments.index') }}">Appointments</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link nav-link-custom {{ request()->routeIs('report') ? 'active' : '' }}"

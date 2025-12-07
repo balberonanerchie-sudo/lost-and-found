@@ -111,6 +111,11 @@
                 <div class="form-wrapper" id="form-register-user">
                     <form method="POST" action="{{ route('register.perform') }}">
                         @csrf
+
+                        {{-- Always register as Student, Active --}}
+                        <input type="hidden" name="role" value="student">
+                        <input type="hidden" name="status" value="active">
+
                         <div class="mb-3">
                             <label class="form-label-custom">Full Name</label>
                             <input type="text" name="name" class="form-control" placeholder="John Doe"
@@ -121,11 +126,19 @@
                             <div class="col-6">
                                 <label class="form-label-custom">Contact No.</label>
                                 <input type="tel" class="form-control" placeholder="09XX...">
+                                {{-- add name="contact_no" later if you wire it in the DB --}}
                             </div>
                             <div class="col-6">
                                 <label class="form-label-custom">Birthdate</label>
                                 <input type="date" class="form-control">
+                                {{-- add name="birthdate" later if you wire it in the DB --}}
                             </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label-custom">Department</label>
+                            <input type="text" name="department" class="form-control" placeholder="e.g. College of IT"
+                                value="{{ old('department') }}">
                         </div>
 
                         <div class="mb-3">
@@ -160,6 +173,7 @@
                         <button type="submit" class="btn-action">Create Account</button>
                     </form>
                 </div>
+
 
             </div>
 
