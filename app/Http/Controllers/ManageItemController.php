@@ -28,9 +28,6 @@ class ManageItemController extends Controller
         return view('pages.studSearch', compact('items'));
     }
 
-    /**
-     * Store a newly created item
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([

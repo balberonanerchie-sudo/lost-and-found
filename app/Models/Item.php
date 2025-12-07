@@ -15,8 +15,10 @@ class Item extends Model
         'description',
         'location',
         'date_found',
+        'description',    // Added
         'image',
         'status',
+        'reporter_email', // Added
         'owner_id',
     ];
 
