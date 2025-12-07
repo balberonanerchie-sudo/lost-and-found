@@ -35,19 +35,22 @@
             </div>
 
             <div class="role-switch" id="role-switcher-container">
-                <div class="role-option active" id="role-user" onclick="switchRole('user')">User</div>
+                <div class="role-option active" id="role-user" onclick="switchRole('user')">Student</div>
                 <div class="role-option" id="role-admin" onclick="switchRole('admin')">Admin</div>
             </div>
 
             <div id="forms-container">
 
-                {{-- USER LOGIN --}}
+                {{-- STUDENT LOGIN --}}
                 <div class="form-wrapper active" id="form-login-user">
                     <form method="POST" action="{{ route('login.perform') }}">
                         @csrf
+                        <input type="hidden" name="login_type" value="student">
+
                         <div class="mb-3">
                             <label class="form-label-custom">Email Address</label>
-                            <input type="email" name="email" class="form-control" placeholder="user@example.com">
+                            <input type="email" name="email" class="form-control" placeholder="user@example.com"
+                                value="{{ old('email') }}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label-custom">Password</label>
@@ -55,7 +58,7 @@
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="remUser">
+                                <input class="form-check-input" type="checkbox" name="remember" id="remUser">
                                 <label class="form-check-label" for="remUser"
                                     style="font-size: 0.8rem; color: #888;">Remember me</label>
                             </div>
@@ -63,6 +66,13 @@
                                 Forgot password?
                             </a>
                         </div>
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger py-2 px-3" style="font-size:0.8rem;">
+                                {{ $errors->first() }}
+                            </div>
+                        @endif
+
                         <button type="submit" class="btn-action">Login</button>
                     </form>
                 </div>
@@ -75,25 +85,36 @@
                     </div>
                     <form method="POST" action="{{ route('login.perform') }}">
                         @csrf
+                        <input type="hidden" name="login_type" value="admin">
+
                         <div class="mb-3">
                             <label class="form-label-custom">Admin Email</label>
-                            <input type="email" name="email" class="form-control" placeholder="admin@wefind.com">
+                            <input type="email" name="email" class="form-control" placeholder="admin@wefind.com"
+                                value="{{ old('email') }}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label-custom">Secure Key</label>
                             <input type="password" name="password" class="form-control" placeholder="••••••••">
                         </div>
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger py-2 px-3" style="font-size:0.8rem;">
+                                {{ $errors->first() }}
+                            </div>
+                        @endif
+
                         <button type="submit" class="btn-action">Access Dashboard</button>
                     </form>
                 </div>
 
-                {{-- USER REGISTER --}}
+                {{-- STUDENT REGISTER --}}
                 <div class="form-wrapper" id="form-register-user">
                     <form method="POST" action="{{ route('register.perform') }}">
                         @csrf
                         <div class="mb-3">
                             <label class="form-label-custom">Full Name</label>
-                            <input type="text" name="name" class="form-control" placeholder="John Doe">
+                            <input type="text" name="name" class="form-control" placeholder="John Doe"
+                                value="{{ old('name') }}">
                         </div>
 
                         <div class="row mb-3">
@@ -109,7 +130,8 @@
 
                         <div class="mb-3">
                             <label class="form-label-custom">Email Address</label>
-                            <input type="email" name="email" class="form-control" placeholder="name@email.com">
+                            <input type="email" name="email" class="form-control" placeholder="name@email.com"
+                                value="{{ old('email') }}">
                         </div>
 
                         <div class="mb-3">
@@ -128,6 +150,12 @@
                                 I agree to the <a href="#" class="terms-link">Terms & Conditions</a>
                             </label>
                         </div>
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger py-2 px-3" style="font-size:0.8rem;">
+                                {{ $errors->first() }}
+                            </div>
+                        @endif
 
                         <button type="submit" class="btn-action">Create Account</button>
                     </form>
@@ -151,21 +179,15 @@
         let currentRole = 'user';  // user or admin
 
         function updateUI() {
-            // 1. Hide all forms first
             document.querySelectorAll('.form-wrapper').forEach(el => el.classList.remove('active'));
 
-            // 2. Construct ID and show specific form
             const targetId = `form-${currentMode}-${currentRole}`;
             const targetForm = document.getElementById(targetId);
-
             if (targetForm) {
                 targetForm.classList.add('active');
             }
 
-            // 3. Update Hero Text
             const heroText = document.getElementById('hero-text');
-
-            // Reset animation
             heroText.style.animation = 'none';
             heroText.offsetHeight;
             heroText.style.animation = null;
@@ -180,7 +202,6 @@
         function switchMode(mode) {
             currentMode = mode;
 
-            // Update Tab Button Styles
             document.querySelectorAll('.btn-toggle-main').forEach(btn => btn.classList.remove('active'));
             document.getElementById(`tab-${mode}`).classList.add('active');
 
