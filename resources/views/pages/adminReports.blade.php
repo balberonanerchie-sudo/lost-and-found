@@ -50,6 +50,17 @@
                            value="{{ request('location') }}">
                 </div>
 
+                <div class="filter-group">
+                    <label>Status</label>
+                    <select class="filter-select" name="status">
+                        <option value="">All Statuses</option>
+                        <option value="new"     {{ request('status') === 'new' ? 'selected' : '' }}>New</option>
+                        <option value="linked"  {{ request('status') === 'linked' ? 'selected' : '' }}>Linked</option>
+                        <option value="closed"  {{ request('status') === 'closed' ? 'selected' : '' }}>Closed</option>
+                    </select>
+                </div>
+
+
                 <button type="button"
                         class="btn-reset"
                         onclick="window.location='{{ route('admin.reports') }}'">

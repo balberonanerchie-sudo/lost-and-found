@@ -14,6 +14,11 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
+        \Log::info('REPORT STORE HIT', [
+            'contact_email' => $request->input('contact_email'),
+            'type'          => $request->input('type'),
+        ]);
+
         $validated = $request->validate([
             'type'          => 'required|in:lost,found',
             'item_name'     => 'required|string|max:255',
@@ -31,9 +36,10 @@ class ReportController extends Controller
             $imagePath = $request->file('photo')->store('reports', 'public');
         }
 
-        Report::create([
+        // Build the full data array once
+        $data = [
             'user_id'       => Auth::id(),
-            'type'          => $validated['type'], // lost / found
+            'type'          => $validated['type'],           // lost / found
             'item_name'     => $validated['item_name'],
             'category'      => $validated['category'] ?? null,
             'description'   => $validated['description'] ?? null,
@@ -41,19 +47,26 @@ class ReportController extends Controller
             'incident_date' => $validated['incident_date'] ?? null,
             'image_path'    => $imagePath,
             'contact_email' => $validated['contact_email'] ?? Auth::user()?->email,
-            'status'        => 'new',
-            'item_id'       => null, // to be linked by admin later
-        ]);
+            // KEY CHANGE: status by type
+            'status'        => $validated['type'] === 'found'
+                ? 'pending_appointment'   // hidden until admin approves
+                : 'new',                  // lost reports appear immediately
+            'item_id'       => null,
+        ];
 
-        $report = Report::create($validated);
+        // Single insert
+        $report = Report::create($data);
 
+        // For FOUND reports, go straight to the Schedule Pickup form
         if ($report->type === 'found') {
             return redirect()->route('appointments.turnover', $report->id);
         }
-        
+
+        // LOST reports: just show success and stay on the form (or redirect where you like)
         return redirect()->back()
             ->with('success', 'Your report has been submitted. Our staff will review it shortly.');
     }
+
 
     /**
      * Admin: list ALL reports (lost + found), with optional filters.
@@ -79,6 +92,11 @@ class ReportController extends Controller
             $query->where('location', 'like', '%' . $request->location . '%');
         }
 
+        // Filter by status (new / linked / closed)
+                if ($request->filled('status')) {
+                    $query->where('status', $request->status);
+                }
+
         // Search across item_name, location, and contact_email
         if ($request->filled('search')) {
             $search = $request->search;
@@ -88,6 +106,9 @@ class ReportController extends Controller
                 ->orWhere('contact_email', 'like', "%{$search}%");
             });
         }
+        
+        // Hide found reports that are still waiting for appointment approval
+        $query->where('status', '!=', 'pending_appointment');
 
         $reports = $query
             ->orderBy('created_at', 'desc')
@@ -211,5 +232,43 @@ class ReportController extends Controller
         $report->delete();
 
         return back()->with('success', 'Report deleted successfully.');
+    }
+
+    /**
+     * Admin: after matching a lost report to a found item and verifying ownership,
+     * link them and finalize the claim.
+     */
+    public function confirmClaimFromModal(Request $request)
+    {
+        $data = $request->validate([
+            'item_id'   => 'required|exists:items,id',
+            'report_id' => 'required|exists:reports,id',
+        ]);
+
+        $item   = Item::findOrFail($data['item_id']);
+        $report = Report::findOrFail($data['report_id']);
+
+        // Safety: only allow LOST reports
+        if ($report->type !== 'lost') {
+            return redirect()
+                ->route('admin.items')
+                ->with('error', 'Only lost reports can be linked as claims.');
+        }
+
+        // 1) Mark item as claimed and set owner
+        $item->update([
+            'status'   => 'claimed',
+            'owner_id' => $report->user_id, // assumes reports.user_id exists
+        ]);
+
+        // 2) Link lost report to item and close it
+        $report->update([
+            'item_id' => $item->id, // assumes reports has item_id column
+            'status'  => 'closed',
+        ]);
+
+        return redirect()
+            ->route('admin.items')
+            ->with('success', 'Lost report linked and item marked as claimed.');
     }
 }

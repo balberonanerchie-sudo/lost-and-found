@@ -36,10 +36,11 @@
                     <select class="filter-select" name="category">
                         <option value="">All Categories</option>
                         <option value="electronics" {{ request('category') === 'electronics' ? 'selected' : '' }}>Electronics</option>
+                        <option value="wallet"      {{ request('category') === 'wallet' ? 'selected' : '' }}>Wallet/ID</option>
+                        <option value="keys"        {{ request('category') === 'keys' ? 'selected' : '' }}>Keys</option>
+                        <option value="clothing"    {{ request('category') === 'clothing' ? 'selected' : '' }}>Clothing</option>
                         <option value="accessories" {{ request('category') === 'accessories' ? 'selected' : '' }}>Accessories</option>
-                        <option value="documents"   {{ request('category') === 'documents'   ? 'selected' : '' }}>Documents</option>
-                        <option value="clothing"    {{ request('category') === 'clothing'    ? 'selected' : '' }}>Clothing</option>
-                        <option value="others"      {{ request('category') === 'others'      ? 'selected' : '' }}>Others</option>
+                        <option value="other"       {{ request('category') === 'other' ? 'selected' : '' }}>Others</option>
                     </select>
                 </div>
 
@@ -154,16 +155,14 @@
                                 <div class="action-btns d-flex gap-1">
 
                                     {{-- 1. MARK CLAIMED Button (unchanged) --}}
-                                    <form action="{{ route('admin.items.claim', $item->id) }}" method="POST" class="d-inline">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit"
-                                                class="btn-sm btn-claim"
-                                                title="Mark as Claimed"
-                                                {{ $item->status == 'claimed' ? 'disabled' : '' }}>
-                                            <i class="fas fa-check"></i>
-                                        </button>
-                                    </form>
+                                    <button type="button"
+                                            class="btn-sm btn-claim btn-open-claim-modal"
+                                            title="Link Lost Report & Mark Claimed"
+                                            data-item-id="{{ $item->id }}"
+                                            {{ $item->status == 'claimed' ? 'disabled' : '' }}>
+                                        <i class="fas fa-check"></i>
+                                    </button>
+
 
                                     {{-- 2. EDIT button (no data-bs-toggle / target) --}}
                                     <button type="button"
@@ -202,6 +201,59 @@
                 </div>
                 <div class="d-flex justify-content-end">
                     {{ $items->appends(request()->query())->links() }}
+                </div>
+            </div>
+        </div>
+
+        {{-- LINK LOST REPORT / CONFIRM CLAIM MODAL --}}
+        <div class="modal fade" id="confirmClaimModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 shadow-lg">
+                    <div class="modal-header bg-light">
+                        <h5 class="modal-title fw-bold">Link Lost Report & Mark Claimed</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <form action="{{ route('admin.reports.confirmClaimModal') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="item_id" id="claim_item_id">
+
+                        <div class="modal-body p-4">
+                            <p class="text-muted small mb-3">
+                                Select the matching <strong>lost</strong> report for this item. This will:
+                            </p>
+                            <ul class="text-muted small mb-3">
+                                <li>Mark the item as <strong>claimed</strong></li>
+                                <li>Link the lost report to this item</li>
+                                <li>Set the lost report status to <strong>closed</strong></li>
+                            </ul>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-medium small text-muted">Lost Report</label>
+                                <select name="report_id" id="claim_report_id" class="form-select" required>
+                                    <option value="" selected disabled>Select a lost report</option>
+                                    @foreach ($lostReports as $lostReport)
+                                        <option value="{{ $lostReport->id }}">
+                                            #{{ $lostReport->id }} –
+                                            {{ $lostReport->item_name }} ({{ $lostReport->contact_email ?? 'no email' }})
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="form-text small">
+                                    Only lost reports with status <strong>new</strong> or <strong>linked</strong> are listed.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer bg-light">
+                            <button type="button" class="btn btn-link text-muted text-decoration-none" data-bs-dismiss="modal">
+                                Cancel
+                            </button>
+                            <button type="submit" class="btn btn-success px-4">
+                                Confirm Claim
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -505,6 +557,22 @@ document.addEventListener('DOMContentLoaded', () => {
             deleteModal.show();
         });
     });
+
+    // 5) OPEN CONFIRM CLAIM MODAL
+    document.querySelectorAll('.btn-open-claim-modal').forEach(btn => {
+        btn.addEventListener('click', function () {
+            const itemId = this.getAttribute('data-item-id');
+            const itemIdInput = document.getElementById('claim_item_id');
+            if (itemIdInput) {
+                itemIdInput.value = itemId;
+            }
+
+            const modalEl = document.getElementById('confirmClaimModal');
+            const modal   = bootstrap.Modal.getOrCreateInstance(modalEl);
+            modal.show();
+        });
+    });
+
 });
 </script>
 @endsection

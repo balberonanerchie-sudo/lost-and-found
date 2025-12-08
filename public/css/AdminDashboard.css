@@ -35,3 +35,56 @@
     font-size: 0.8rem;
     padding: 0.4em 0.7em;
 }
+
+.chart-card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 1.5rem 1.75rem;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+}
+
+.chart-placeholder {
+    position: relative;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    height: 260px; /* key: gives canvas room */
+}
+
+.chart-placeholder canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.chart-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.chart-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+}
+
+.chart-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.chart-footer-link {
+    color: #047857;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.chart-footer-link:hover {
+    text-decoration: underline;
+}
+

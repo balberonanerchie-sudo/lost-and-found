@@ -50,17 +50,32 @@ class ManageItemController extends Controller
             ->paginate(15)
             ->appends($request->query()); // keep filters/search on pagination
 
-        return view('pages.manage-item', compact('items'));
+        $lostReports = Report::where('type', 'lost')
+        ->whereIn('status', ['new', 'linked'])
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        return view('pages.manage-item', compact('items', 'lostReports'));
     }
 
     /**
      * Display a listing of items for User
      */
-    public function userIndex()
+    public function userIndex(Request $request)
     {
-        $items = Item::latest()->orderBy('created_at', 'desc')->paginate(15);
+        $query = Item::query();
+
+        // existing filters (category, location, search, etc.) ...
+
+        // Hide claimed items from student search
+        $query->where('status', '!=', 'claimed'); // or ->whereIn('status', ['unclaimed','pending'])
+                                                // [web:315][web:318]
+
+        $items = $query->orderBy('created_at', 'desc')->paginate(12);
+
         return view('pages.studSearch', compact('items'));
     }
+
 
     /**
      * Store a newly created item.

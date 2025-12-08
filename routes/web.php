@@ -45,9 +45,9 @@ Route::middleware('auth')->group(function () {
 
     // Student: My Appointments (dynamic)
     Route::get('/appointments', [CheckAppointmentController::class, 'studentIndex'])
-        ->name('appointment'); // keep original route name for navbar etc.
+        ->name('appointment'); // used by navbar etc.
 
-    // Optional alias if you still use this name somewhere
+    // Optional alias if still referenced somewhere
     Route::get('/read-appointments', [CheckAppointmentController::class, 'studentIndex'])
         ->name('student.appointments.index');
 
@@ -55,17 +55,21 @@ Route::middleware('auth')->group(function () {
     Route::get('/report-item',  [PageController::class, 'reportItem'])->name('report');
     Route::post('/report-item', [ReportController::class, 'store'])->name('report.store');
 
-    // Appointment routes (student side)
+    /*
+    |----------------------------------------------------------------------
+    | Appointment routes (student side)
+    |----------------------------------------------------------------------
+    */
 
-    // From Search Items → Claim button
+    // From Search Items → Claim button (CLAIM flow)
     Route::get('/items/{item}/claim', [CheckAppointmentController::class, 'createClaim'])
         ->name('appointments.claim');
 
-    // After submitting a FOUND report → schedule turnover appointment
+    // After submitting a FOUND report → schedule turnover appointment (TURNOVER flow)
     Route::get('/reports/{report}/schedule-turnover', [CheckAppointmentController::class, 'createTurnover'])
         ->name('appointments.turnover');
 
-    // Form POST from Schedule Pickup (claim + turnover share this)
+    // Form POST from Schedule Pickup (both claim + turnover)
     Route::post('/appointments', [CheckAppointmentController::class, 'store'])
         ->name('appointments.store');
 
@@ -79,10 +83,6 @@ Route::middleware('auth')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
-
-    Route::get('/whoami', function () {
-    return auth()->user();
-});
 
     // Dashboard
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])
@@ -107,6 +107,8 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
         ->name('admin.reports.createItem');
     Route::get('/reports/{report}/match', [ReportController::class, 'matchInItems'])
         ->name('admin.reports.match');
+    Route::post('/reports/confirm-claim-modal', [ReportController::class, 'confirmClaimFromModal'])
+        ->name('admin.reports.confirmClaimModal');
     Route::put('/reports',  [ReportController::class, 'update'])->name('admin.reports.update');
     Route::delete('/reports', [ReportController::class, 'destroy'])->name('admin.reports.destroy');
 
