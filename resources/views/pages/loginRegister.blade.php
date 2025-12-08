@@ -56,13 +56,9 @@
                             <label class="form-label-custom">Password</label>
                             <input type="password" name="password" class="form-control" placeholder="••••••••">
                         </div>
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="remember" id="remUser">
-                                <label class="form-check-label" for="remUser"
-                                    style="font-size: 0.8rem; color: #888;">Remember me</label>
-                            </div>
-                            <a href="{{ route('password.request') }}" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;">Forgot password?</a>
+                        <div class="d-flex justify-content-end mb-3">
+                            <a href="{{ route('password.request') }}" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;">
+                                Forgot password?</a>
                                 
                             </a>
                         </div>
