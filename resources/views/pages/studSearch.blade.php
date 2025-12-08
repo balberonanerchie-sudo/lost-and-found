@@ -63,7 +63,7 @@
                         <button
                             type="button"
                             class="btn btn-outline-secondary"
-                            onclick="window.location='{{ route('search') }}'">
+                            onclick="window.location='{{ route('/search') }}'">
                             Reset
                         </button>
                     </div>
@@ -131,4 +131,34 @@
             {{ $items->appends(request()->query())->links() }}
         </div>
 
-        
+        <footer class="bg-dark text-white py-5 mt-auto w-100">
+        <div class="container text-center">
+            <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
+                <i data-lucide="compass" class="text-success"></i>
+                <span class="fw-bold fs-5">weFind</span>
+            </div>
+
+
+@section('scripts')
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('studentItemsFiltersForm');
+
+    // Auto-submit dropdown/date filters on change
+    document.querySelectorAll('#studentItemsFiltersForm .filter-select').forEach(el => {
+        el.addEventListener('change', () => form.submit());
+    });
+
+    // Submit search on Enter
+    const searchInput = document.querySelector('#studentItemsFiltersForm input[name="query"]');
+    if (searchInput) {
+        searchInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                form.submit();
+            }
+        });
+    }
+});
+</script>
+@endsection
