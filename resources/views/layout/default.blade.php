@@ -60,17 +60,10 @@
                 </li>
                 <li>
 
-                    <a href="{{ route('admin.lostReports') }}" 
+                    <a href="{{ route('admin.reports') }}" 
                         class="nav-link {{ request()->routeIs('admin.lostReports') ? 'active' : '' }}">
                         <i class="fas fa-search-minus"></i>
-                        <span>Lost Reports</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ route('admin.foundReports') }}" 
-                        class="nav-link {{ request()->routeIs('admin.foundReports') ? 'active' : '' }}">
-                        <i class="fas fa-search-plus"></i>
-                        <span>Found Reports</span>
+                        <span>Manage Reports</span>
                     </a>
                 </li>
                     <a href="{{ route('admin.appointments') }}"

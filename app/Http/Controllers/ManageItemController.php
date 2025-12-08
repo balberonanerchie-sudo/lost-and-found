@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
-use App\Models\User;
+use App\Models\Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -62,6 +62,10 @@ class ManageItemController extends Controller
         return view('pages.studSearch', compact('items'));
     }
 
+    /**
+     * Store a newly created item.
+     * Optionally links to a Report when report_id is present.
+     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -81,7 +85,20 @@ class ManageItemController extends Controller
             $validated['image'] = $request->file('image')->store('items', 'public');
         }
 
-        Item::create($validated);
+        // Create the item
+        $item = Item::create($validated);
+
+        // If this item was created from a Report, link them
+        if ($request->filled('report_id')) {
+            $report = Report::find($request->input('report_id'));
+
+            if ($report) {
+                $report->update([
+                    'item_id' => $item->id,
+                    'status'  => 'linked', // your New/Linked/Closed workflow
+                ]);
+            }
+        }
 
         return redirect()->route('admin.items')
             ->with('success', 'Item added successfully!');
