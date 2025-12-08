@@ -49,7 +49,6 @@ class CheckAppointmentController extends Controller
         ));
     }
 
-
     /**
      * Student: read-only list of this user's appointments.
      */
@@ -74,10 +73,11 @@ class CheckAppointmentController extends Controller
         $rules = [
             'type'  => 'required|in:turnover,claim',
             'date'  => 'required|date|after_or_equal:today',
-            'time'  => 'required|string|max:20',
+            'time'  => 'required|string|max:20',  // "01:00 PM" etc.
             'notes' => 'nullable|string|max:1000',
         ];
 
+        // For claim appointments we need an item_id
         if ($type === 'claim') {
             $rules['item_id'] = 'required|exists:items,id';
         } else {
@@ -86,17 +86,12 @@ class CheckAppointmentController extends Controller
 
         $validated = $request->validate($rules);
 
-        // Convert "01:00 PM" → "13:00:00" for MySQL TIME column
+        // Convert "01:00 PM" → "13:00:00" for MySQL TIME
         $timeString = $validated['time'];
-
         if (preg_match('/am|pm/i', $timeString)) {
-            $validated['time'] = Carbon::createFromFormat('h:i A', $timeString)
-                ->format('H:i:s');
-        } else {
-            // If already 24h like "13:00", normalize to "13:00:00"
-            if (preg_match('/^\d{2}:\d{2}$/', $timeString)) {
-                $validated['time'] = $timeString . ':00';
-            }
+            $validated['time'] = Carbon::createFromFormat('h:i A', $timeString)->format('H:i:s');
+        } elseif (preg_match('/^\d{2}:\d{2}$/', $timeString)) {
+            $validated['time'] = $timeString . ':00';
         }
 
         $validated['user_id'] = auth()->id();
@@ -106,11 +101,8 @@ class CheckAppointmentController extends Controller
 
         return redirect()
             ->route('report')
-            ->with('success', 'Appointment booked successfully!');
+            ->with('success', 'Your appointment has been scheduled and is pending approval.');
     }
-
-
-
 
     /**
      * Update the specified appointment (admin).
@@ -180,11 +172,11 @@ class CheckAppointmentController extends Controller
                     ?? 'Item';
 
                 return [
-                    'id'         => $appointment->id,
-                    'title'      => $itemName . ' - ' . $appointment->user->name,
-                    'start'      => $appointment->date . 'T' . $appointment->time,
-                    'status'     => $appointment->status,
-                    'className'  => 'fc-event-' . $appointment->status,
+                    'id'        => $appointment->id,
+                    'title'     => $itemName . ' - ' . $appointment->user->name,
+                    'start'     => $appointment->date . 'T' . $appointment->time,
+                    'status'    => $appointment->status,
+                    'className' => 'fc-event-' . $appointment->status,
                     'extendedProps' => [
                         'user'  => $appointment->user->name,
                         'item'  => $itemName,
@@ -235,14 +227,19 @@ class CheckAppointmentController extends Controller
 
         return view('pages.check-appointment', compact('appointments'));
     }
+
     /**
-     * Student: show Schedule Pickup form for a specific item (Claim flow).
+     * Student: Claim flow → show Schedule Pickup form for a specific item.
      */
     public function createClaim(Item $item)
     {
         $user = auth()->user();
 
-        return view('pages.studAppointment', compact('item', 'user'));
+        return view('pages.studAppointment', [
+            'user' => $user,
+            'item' => $item,
+            'mode' => 'claim',
+        ]);
     }
 
     /**
@@ -258,9 +255,26 @@ class CheckAppointmentController extends Controller
             'mode'   => 'turnover',
         ]);
     }
+
+    /**
+     * Admin: approve an appointment.
+     */
     public function approve(Appointment $appointment)
     {
         $appointment->update(['status' => 'approved']);
+
+        if ($appointment->type === 'turnover') {
+            // TURNOVER:
+            // Leave the found report in 'pending_appointment' so it remains hidden.
+            // It will be switched to 'new' in complete().
+        } elseif ($appointment->type === 'claim' && $appointment->item_id) {
+            // CLAIM: when approved, mark item as pending pickup
+            $item = $appointment->item;
+
+            if ($item) {
+                $item->update(['status' => 'pending']);
+            }
+        }
 
         return redirect()
             ->route('admin.appointments')
@@ -276,17 +290,40 @@ class CheckAppointmentController extends Controller
             ->with('success', 'Appointment cancelled. Ask the user to book a new time.');
     }
 
-
+    /**
+     * Admin: mark an appointment as completed.
+     */
     public function complete(Appointment $appointment)
     {
         $appointment->update(['status' => 'completed']);
 
-        // If linked to an item, mark it claimed
-        if ($appointment->item_id) {
+        if ($appointment->type === 'claim' && $appointment->item_id) {
+            // CLAIM: mark item as claimed and close the related found report (if any)
             $appointment->item->update([
                 'status'   => 'claimed',
                 'owner_id' => $appointment->user_id,
             ]);
+
+            $foundReport = Report::where('item_id', $appointment->item_id)
+                ->where('type', 'found')
+                ->latest('created_at')
+                ->first();
+
+            if ($foundReport) {
+                $foundReport->update(['status' => 'closed']);
+            }
+
+        } elseif ($appointment->type === 'turnover') {
+            // TURNOVER: now expose the found report as 'new' in the Reports tab
+            $foundReport = Report::where('user_id', $appointment->user_id)
+                ->where('type', 'found')
+                ->where('status', 'pending_appointment')
+                ->latest('created_at')
+                ->first();
+
+            if ($foundReport) {
+                $foundReport->update(['status' => 'new']);
+            }
         }
 
         return redirect()
@@ -302,5 +339,4 @@ class CheckAppointmentController extends Controller
             ->route('admin.appointments')
             ->with('success', 'Appointment cancelled.');
     }
-
 }

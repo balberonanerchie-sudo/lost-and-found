@@ -175,6 +175,7 @@
                                         </button>
                                     </form>
 
+
                                     <button class="btn-sm btn-info" title="View Details" data-appointment='@json($appointment)'>
                                         <i class="fas fa-eye"></i>
                                     </button>
@@ -430,17 +431,6 @@
             if(confirm('Are you sure you want to Approve this request?')) {
                 console.log('Approved');
                 alert('Appointment Approved!');
-            }
-            return;
-        }
-
-        // Reschedule
-        const reschedBtn = e.target.closest('.btn-reschedule');
-        if (reschedBtn) {
-            if (confirm('Ask the user to reschedule this appointment?')) {
-                // Let the surrounding <form> submit if there is one
-                const form = reschedBtn.closest('form');
-                if (form) form.submit();
             }
             return;
         }
