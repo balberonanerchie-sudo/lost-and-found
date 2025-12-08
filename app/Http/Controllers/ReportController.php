@@ -45,6 +45,12 @@ class ReportController extends Controller
             'item_id'       => null, // to be linked by admin later
         ]);
 
+        $report = Report::create($validated);
+
+        if ($report->type === 'found') {
+            return redirect()->route('appointments.turnover', $report->id);
+        }
+        
         return redirect()->back()
             ->with('success', 'Your report has been submitted. Our staff will review it shortly.');
     }

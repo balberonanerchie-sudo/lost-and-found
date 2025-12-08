@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Appointment;
 use App\Models\Item;
-use App\Models\User;
+use App\Models\Report;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class CheckAppointmentController extends Controller
 {
@@ -14,13 +15,40 @@ class CheckAppointmentController extends Controller
      */
     public function index()
     {
-        $appointments = Appointment::with(['user', 'item'])
-            ->orderBy('date', 'desc')
-            ->orderBy('time', 'desc')
-            ->paginate(15);
+        $pending = Appointment::with(['user', 'item'])
+            ->where('status', 'pending')
+            ->orderBy('date', 'asc')
+            ->orderBy('time', 'asc')
+            ->get();
 
-        return view('pages.check-appointment', compact('appointments'));
+        $approved = Appointment::with(['user', 'item'])
+            ->where('status', 'approved')
+            ->orderBy('date', 'asc')
+            ->orderBy('time', 'asc')
+            ->get();
+
+        $completed = Appointment::with(['user', 'item'])
+            ->where('status', 'completed')
+            ->orderBy('date', 'desc')
+            ->get();
+
+        // Stats for the cards
+        $totalCount     = Appointment::count();
+        $pendingCount   = $pending->count();
+        $approvedCount  = $approved->count();
+        $completedCount = $completed->count();
+
+        return view('pages.check-appointment', compact(
+            'pending',
+            'approved',
+            'completed',
+            'totalCount',
+            'pendingCount',
+            'approvedCount',
+            'completedCount'
+        ));
     }
+
 
     /**
      * Student: read-only list of this user's appointments.
@@ -41,23 +69,48 @@ class CheckAppointmentController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'item_id' => 'required|exists:items,id',
-            'date'    => 'required|date|after_or_equal:today',
-            'time'    => 'required|date_format:H:i',
-            'notes'   => 'nullable|string|max:1000',
-            'status'  => 'nullable|in:pending,confirmed,completed,cancelled',
-        ]);
+        $type = $request->input('type'); // 'turnover' or 'claim'
 
-        // Default status to pending if not provided
-        $validated['status'] = $validated['status'] ?? 'pending';
+        $rules = [
+            'type'  => 'required|in:turnover,claim',
+            'date'  => 'required|date|after_or_equal:today',
+            'time'  => 'required|string|max:20',
+            'notes' => 'nullable|string|max:1000',
+        ];
+
+        if ($type === 'claim') {
+            $rules['item_id'] = 'required|exists:items,id';
+        } else {
+            $rules['item_id'] = 'nullable|exists:items,id';
+        }
+
+        $validated = $request->validate($rules);
+
+        // Convert "01:00 PM" → "13:00:00" for MySQL TIME column
+        $timeString = $validated['time'];
+
+        if (preg_match('/am|pm/i', $timeString)) {
+            $validated['time'] = Carbon::createFromFormat('h:i A', $timeString)
+                ->format('H:i:s');
+        } else {
+            // If already 24h like "13:00", normalize to "13:00:00"
+            if (preg_match('/^\d{2}:\d{2}$/', $timeString)) {
+                $validated['time'] = $timeString . ':00';
+            }
+        }
+
+        $validated['user_id'] = auth()->id();
+        $validated['status']  = 'pending';
 
         Appointment::create($validated);
 
-        return redirect()->back()
+        return redirect()
+            ->route('report')
             ->with('success', 'Appointment booked successfully!');
     }
+
+
+
 
     /**
      * Update the specified appointment (admin).
@@ -182,4 +235,72 @@ class CheckAppointmentController extends Controller
 
         return view('pages.check-appointment', compact('appointments'));
     }
+    /**
+     * Student: show Schedule Pickup form for a specific item (Claim flow).
+     */
+    public function createClaim(Item $item)
+    {
+        $user = auth()->user();
+
+        return view('pages.studAppointment', compact('item', 'user'));
+    }
+
+    /**
+     * Student: show Schedule Pickup form after a FOUND report (turnover).
+     */
+    public function createTurnover(Report $report)
+    {
+        $user = auth()->user();
+
+        return view('pages.studAppointment', [
+            'user'   => $user,
+            'report' => $report,
+            'mode'   => 'turnover',
+        ]);
+    }
+    public function approve(Appointment $appointment)
+    {
+        $appointment->update(['status' => 'approved']);
+
+        return redirect()
+            ->route('admin.appointments')
+            ->with('success', 'Appointment approved successfully.');
+    }
+
+    public function reject(Appointment $appointment)
+    {
+        $appointment->update(['status' => 'cancelled']);
+
+        return redirect()
+            ->route('admin.appointments')
+            ->with('success', 'Appointment cancelled. Ask the user to book a new time.');
+    }
+
+
+    public function complete(Appointment $appointment)
+    {
+        $appointment->update(['status' => 'completed']);
+
+        // If linked to an item, mark it claimed
+        if ($appointment->item_id) {
+            $appointment->item->update([
+                'status'   => 'claimed',
+                'owner_id' => $appointment->user_id,
+            ]);
+        }
+
+        return redirect()
+            ->route('admin.appointments')
+            ->with('success', 'Appointment marked as completed.');
+    }
+
+    public function cancel(Appointment $appointment)
+    {
+        $appointment->update(['status' => 'cancelled']);
+
+        return redirect()
+            ->route('admin.appointments')
+            ->with('success', 'Appointment cancelled.');
+    }
+
 }

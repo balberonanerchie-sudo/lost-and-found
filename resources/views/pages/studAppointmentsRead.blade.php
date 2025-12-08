@@ -50,14 +50,15 @@
                                 <span class="fw-medium">{{ $typeLabel }}</span>
                             </td>
                             <td>
-                                @if($appointment->item)
-                                    <span class="fw-medium">
-                                        {{ $appointment->item->name ?? $appointment->item->item_name }}
-                                    </span>
+                                @if ($appointment->item)
+                                    {{ $appointment->item->item_name }}
+                                @elseif (!empty($appointment->notes))
+                                    {{ $appointment->notes }}
                                 @else
-                                    <span class="text-muted small">Not linked to an item</span>
+                                    Not linked to an item
                                 @endif
                             </td>
+
                             <td>
                                 <div class="d-flex align-items-center gap-2">
                                     <i data-lucide="calendar" size="16" class="text-muted"></i>
@@ -80,44 +81,8 @@
                         </tr>
                     @empty
                         {{-- Static sample rows for now --}}
-                        <tr>
-                            <td><span class="fw-medium">Claim Item</span></td>
-                            <td><span class="fw-medium">Black Wallet</span></td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <i data-lucide="calendar" size="16" class="text-muted"></i>
-                                    <span>Oct 12, 2025</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <i data-lucide="clock" size="16" class="text-muted"></i>
-                                    <span>10:30 AM</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="badge bg-warning-subtle text-warning">Pending</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><span class="fw-medium">Claim Item</span></td>
-                            <td><span class="fw-medium">Blue Umbrella</span></td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <i data-lucide="calendar" size="16" class="text-muted"></i>
-                                    <span>Oct 13, 2025</span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center gap-2">
-                                    <i data-lucide="clock" size="16" class="text-muted"></i>
-                                    <span>2:00 PM</span>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="badge bg-warning-subtle text-warning">Pending</span>
-                            </td>
-                        </tr>
+                        <td colspan="5" class="text-center text-muted py-4">
+                            No appointments found.
                     @endforelse
                     </tbody>
                 </table>

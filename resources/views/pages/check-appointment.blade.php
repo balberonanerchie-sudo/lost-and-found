@@ -26,10 +26,9 @@
                     <i class="fas fa-calendar-alt"></i>
                 </div>
             </div>
-            <div class="stat-value">156</div>
-            <div class="stat-change positive">
-                <i class="fas fa-arrow-up"></i>
-                <span>12% from last month</span>
+            <div class="stat-value">{{ $totalCount }}</div>
+            <div class="stat-change">
+                <span>All time</span>
             </div>
         </div>
 
@@ -40,7 +39,7 @@
                     <i class="fas fa-clock"></i>
                 </div>
             </div>
-            <div class="stat-value">24</div>
+            <div class="stat-value">{{ $pendingCount }}</div>
             <div class="stat-change">
                 <span>Awaiting approval</span>
             </div>
@@ -53,10 +52,9 @@
                     <i class="fas fa-check-circle"></i>
                 </div>
             </div>
-            <div class="stat-value">98</div>
-            <div class="stat-change positive">
-                <i class="fas fa-arrow-up"></i>
-                <span>8% from last month</span>
+            <div class="stat-value">{{ $approvedCount }}</div>
+            <div class="stat-change">
+                <span>Scheduled</span>
             </div>
         </div>
 
@@ -67,25 +65,25 @@
                     <i class="fas fa-calendar-check"></i>
                 </div>
             </div>
-            <div class="stat-value">34</div>
-            <div class="stat-change positive">
-                <i class="fas fa-arrow-up"></i>
-                <span>15% from last month</span>
+            <div class="stat-value">{{ $completedCount }}</div>
+            <div class="stat-change">
+                <span>Finished</span>
             </div>
         </div>
     </div>
+
 
     <div class="tabs-container">
         <div class="tabs">
             <button class="tab-btn active" data-tab="pending">
                 <i class="fas fa-clock"></i>
                 Pending
-                <span class="badge bg-success text-white ms-2 rounded-pill">24</span>
+                <span class="badge bg-success text-white ms-2 rounded-pill">{{ $pendingCount }}</span>
             </button>
             <button class="tab-btn" data-tab="approved">
                 <i class="fas fa-check-circle"></i>
                 Approved
-                <span class="badge bg-success text-white ms-2 rounded-pill">98</span>
+                <span class="badge bg-success text-white ms-2 rounded-pill">{{ $approvedCount }}</span>
             </button>
             <button class="tab-btn" data-tab="calendar">
                 <i class="fas fa-calendar-alt"></i>
@@ -119,61 +117,79 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td data-label="User">
-                            <div class="user-cell">
-                                <div class="user-avatar">MG</div>
-                                <div class="user-info">
-                                    <strong>Maria Garcia</strong>
+                    @forelse ($pending as $appointment)
+                        <tr>
+                            <td data-label="User">
+                                <div class="user-cell">
+                                    <div class="user-avatar">
+                                        {{ strtoupper(substr($appointment->user->name, 0, 2)) }}
+                                    </div>
+                                    <div class="user-info">
+                                        <strong>{{ $appointment->user->name }}</strong>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td data-label="Contact">maria.garcia@email.com</td>
-                        <td data-label="Date">
-                            <div class="date-tag"><i class="fas fa-calendar"></i> Oct 12, 2025</div>
-                        </td>
-                        <td data-label="Time">
-                            <div class="time-tag"><i class="fas fa-clock"></i> 10:30 AM</div>
-                        </td>
-                        <td data-label="Item"><strong>Black Wallet</strong></td>
-                        <td data-label="Purpose">Claim Item</td>
-                        <td data-label="Status"><span class="badge warning">Pending</span></td>
-                        <td data-label="Actions">
-                            <div class="action-btns">
-                                <button class="btn-sm btn-approve" title="Approve"><i class="fas fa-check"></i></button>
-                                <button class="btn-sm btn-reject" title="Reject"><i class="fas fa-times"></i></button>
-                                <button class="btn-sm btn-info" title="View Details"><i class="fas fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td data-label="User">
-                            <div class="user-cell">
-                                <div class="user-avatar">JD</div>
-                                <div class="user-info">
-                                    <strong>John Doe</strong>
+                            </td>
+                            <td data-label="Contact">{{ $appointment->user->email }}</td>
+                            <td data-label="Date">
+                                <div class="date-tag">
+                                    <i class="fas fa-calendar"></i>
+                                    {{ \Carbon\Carbon::parse($appointment->date)->format('M d, Y') }}
                                 </div>
-                            </div>
-                        </td>
-                        <td data-label="Contact">john.doe@email.com</td>
-                        <td data-label="Date">
-                            <div class="date-tag"><i class="fas fa-calendar"></i> Oct 13, 2025</div>
-                        </td>
-                        <td data-label="Time">
-                            <div class="time-tag"><i class="fas fa-clock"></i> 2:00 PM</div>
-                        </td>
-                        <td data-label="Item"><strong>Blue Umbrella</strong></td>
-                        <td data-label="Purpose">Claim Item</td>
-                        <td data-label="Status"><span class="badge warning">Pending</span></td>
-                        <td data-label="Actions">
-                            <div class="action-btns">
-                                <button class="btn-sm btn-approve" title="Approve"><i class="fas fa-check"></i></button>
-                                <button class="btn-sm btn-reject" title="Reject"><i class="fas fa-times"></i></button>
-                                <button class="btn-sm btn-info" title="View Details"><i class="fas fa-eye"></i></button>
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+                            <td data-label="Time">
+                                <div class="time-tag">
+                                    <i class="fas fa-clock"></i>
+                                    {{ \Carbon\Carbon::parse($appointment->time)->format('g:i A') }}
+                                </div>
+                            </td>
+                            <td data-label="Item">
+                                <strong>
+                                    @if ($appointment->item)
+                                        {{ $appointment->item->item_name }}
+                                    @else
+                                        {{ $appointment->notes ?? 'N/A' }}
+                                    @endif
+                                </strong>
+                            </td>
+                            <td data-label="Purpose">{{ ucfirst($appointment->type) }}</td>
+                            <td data-label="Status">
+                                <span class="badge warning">Pending</span>
+                            </td>
+                            <td data-label="Actions">
+                                <div class="action-btns">
+                                    <form action="{{ route('admin.appointments.approve', $appointment->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn-sm btn-approve" title="Approve">
+                                            <i class="fas fa-check"></i>
+                                        </button>
+                                    </form>
+                                    <form action="{{ route('admin.appointments.reject', $appointment->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit"
+                                                class="btn-sm btn-reschedule"
+                                                title="Request Reschedule"
+                                                onclick="return confirm('Ask the user to reschedule this appointment?');">
+                                            <i class="fas fa-redo"></i>
+                                        </button>
+                                    </form>
+
+                                    <button class="btn-sm btn-info" title="View Details" data-appointment='@json($appointment)'>
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center py-4 text-muted">
+                                No pending appointments.
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
+
             </table>
         </div>
     </div>
@@ -203,34 +219,75 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td data-label="User">
-                            <div class="user-cell">
-                                <div class="user-avatar">RJ</div>
-                                <div class="user-info">
-                                    <strong>Robert Johnson</strong>
+                    @forelse ($approved as $appointment)
+                        <tr>
+                            <td data-label="User">
+                                <div class="user-cell">
+                                    <div class="user-avatar">
+                                        {{ strtoupper(substr($appointment->user->name, 0, 2)) }}
+                                    </div>
+                                    <div class="user-info">
+                                        <strong>{{ $appointment->user->name }}</strong>
+                                    </div>
                                 </div>
-                            </div>
-                        </td>
-                        <td data-label="Contact">robert.j@email.com</td>
-                        <td data-label="Date">
-                            <div class="date-tag"><i class="fas fa-calendar"></i> Oct 13, 2025</div>
-                        </td>
-                        <td data-label="Time">
-                            <div class="time-tag"><i class="fas fa-clock"></i> 2:00 PM</div>
-                        </td>
-                        <td data-label="Item"><strong>iPhone 13</strong></td>
-                        <td data-label="Purpose">Claim Item</td>
-                        <td data-label="Status"><span class="badge success">Approved</span></td>
-                        <td data-label="Actions">
-                            <div class="action-btns">
-                                <button class="btn-sm btn-complete" title="Complete"><i class="fas fa-check-double"></i></button>
-                                <button class="btn-sm btn-info" title="View Details"><i class="fas fa-eye"></i></button>
-                                <button class="btn-sm btn-danger" title="Cancel"><i class="fas fa-times"></i></button>
-                            </div>
-                        </td>
-                    </tr>
+                            </td>
+                            <td data-label="Contact">{{ $appointment->user->email }}</td>
+                            <td data-label="Date">
+                                <div class="date-tag">
+                                    <i class="fas fa-calendar"></i>
+                                    {{ \Carbon\Carbon::parse($appointment->date)->format('M d, Y') }}
+                                </div>
+                            </td>
+                            <td data-label="Time">
+                                <div class="time-tag">
+                                    <i class="fas fa-clock"></i>
+                                    {{ \Carbon\Carbon::parse($appointment->time)->format('g:i A') }}
+                                </div>
+                            </td>
+                            <td data-label="Item">
+                                <strong>
+                                    @if ($appointment->item)
+                                        {{ $appointment->item->item_name }}
+                                    @else
+                                        {{ $appointment->notes ?? 'N/A' }}
+                                    @endif
+                                </strong>
+                            </td>
+                            <td data-label="Purpose">{{ ucfirst($appointment->type) }}</td>
+                            <td data-label="Status">
+                                <span class="badge success">Approved</span>
+                            </td>
+                            <td data-label="Actions">
+                                <div class="action-btns">
+                                    <form action="{{ route('admin.appointments.complete', $appointment->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn-sm btn-complete" title="Complete">
+                                            <i class="fas fa-check-double"></i>
+                                        </button>
+                                    </form>
+                                    <button class="btn-sm btn-info" title="View Details" data-appointment='@json($appointment)'>
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                    <form action="{{ route('admin.appointments.cancel', $appointment->id) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="btn-sm btn-danger" title="Cancel">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center py-4 text-muted">
+                                No approved appointments.
+                            </td>
+                        </tr>
+                    @endforelse
                 </tbody>
+
             </table>
         </div>
     </div>
@@ -377,15 +434,17 @@
             return;
         }
 
-        // Reject
-        const rejectBtn = e.target.closest('.btn-reject');
-        if (rejectBtn) {
-            if(confirm('Are you sure you want to Reject this request?')) {
-                console.log('Rejected');
-                alert('Appointment Rejected.');
+        // Reschedule
+        const reschedBtn = e.target.closest('.btn-reschedule');
+        if (reschedBtn) {
+            if (confirm('Ask the user to reschedule this appointment?')) {
+                // Let the surrounding <form> submit if there is one
+                const form = reschedBtn.closest('form');
+                if (form) form.submit();
             }
             return;
         }
+
 
         // Complete
         const completeBtn = e.target.closest('.btn-complete');

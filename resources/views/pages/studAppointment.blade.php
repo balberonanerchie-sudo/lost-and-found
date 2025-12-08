@@ -12,38 +12,68 @@
                 </div>
 
                 <div class="custom-card p-4 p-md-5 bg-white">
-                    <form>
+                    <form action="{{ route('appointments.store') }}" method="POST">
+                        @csrf
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul class="mb-0">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        {{-- Turnover type --}}
+                        <input type="hidden" name="type" value="turnover">
+                        <input type="hidden" name="notes" value="{{ $report->item_name }}">
+                        
                         <h5 class="fw-bold mb-4 text-success border-bottom pb-2">Your Information</h5>
                         <div class="row g-4 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-medium small text-muted">Full Name</label>
-                                <input type="text" class="form-control form-control-lg" placeholder="John Doe">
+                                <input type="text"
+                                    class="form-control form-control-lg"
+                                    value="{{ $user->name }}"
+                                    disabled>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-medium small text-muted">Email Address</label>
-                                <input type="email" class="form-control form-control-lg" placeholder="john@example.com">
+                                <input type="email"
+                                    class="form-control form-control-lg"
+                                    value="{{ $user->email }}"
+                                    disabled>
                             </div>
                         </div>
 
                         <h5 class="fw-bold mb-4 text-success border-bottom pb-2 mt-5">Item Details</h5>
                         <div class="mb-4">
                             <label class="form-label fw-medium small text-muted">Item Name / Reference ID</label>
-                            <input type="text" class="form-control form-control-lg" placeholder="e.g. Black Wallet #4421">
+                            <input type="text"
+                                class="form-control form-control-lg"
+                                value="{{ $report->item_name }}"
+                                disabled>
                         </div>
 
                         <h5 class="fw-bold mb-4 text-success border-bottom pb-2 mt-5">Appointment Time</h5>
                         <div class="row g-4 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-medium small text-muted">Date</label>
-                                <input type="date" class="form-control form-control-lg">
+                                <input type="date"
+                                    name="date"
+                                    class="form-control form-control-lg"
+                                    value="{{ old('date') }}"
+                                    required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-medium small text-muted">Time Slot</label>
-                                <select class="form-select form-select-lg">
-                                    <option>09:00 AM - 10:00 AM</option>
-                                    <option>10:00 AM - 11:00 AM</option>
-                                    <option>01:00 PM - 02:00 PM</option>
-                                    <option>02:00 PM - 03:00 PM</option>
+                                <select name="time" class="form-select form-select-lg" required>
+                                    <option value="">Select a time</option>
+                                    <option value="09:00 AM" {{ old('time') === '09:00 AM' ? 'selected' : '' }}>09:00 AM - 10:00 AM</option>
+                                    <option value="10:00 AM" {{ old('time') === '10:00 AM' ? 'selected' : '' }}>10:00 AM - 11:00 AM</option>
+                                    <option value="01:00 PM" {{ old('time') === '01:00 PM' ? 'selected' : '' }}>01:00 PM - 02:00 PM</option>
+                                    <option value="02:00 PM" {{ old('time') === '02:00 PM' ? 'selected' : '' }}>02:00 PM - 03:00 PM</option>
                                 </select>
                             </div>
                         </div>
@@ -55,6 +85,8 @@
                         </div>
                     </form>
                 </div>
+
+
             </div>
         </div>
     </div>

@@ -38,58 +38,67 @@ class LoginController extends Controller
      */
     public function login(Request $request)
     {
-        // If someone hits /login while already logged in, just redirect them
+        // If already logged in, just redirect
         if (Auth::check()) {
             return $this->redirectBasedOnRole(Auth::user());
         }
 
+        // Validate credentials + which tab was used
         $data = $request->validate([
             'email'      => ['required', 'email'],
             'password'   => ['required'],
-            'login_type' => ['nullable', 'in:student,admin'],
+            'login_type' => ['required', 'in:student,admin'], // Student / Admin toggle
         ]);
 
-        // Find user by email
-        $user = User::where('email', $data['email'])->first();
-
-        // Check credentials
-        if (!$user || !Hash::check($data['password'], $user->password)) {
+        // Try to authenticate with email + password
+        if (!Auth::attempt(
+            ['email' => $data['email'], 'password' => $data['password']],
+            $request->boolean('remember')
+        )) {
             return back()->withErrors([
                 'email' => 'The provided credentials do not match our records.',
-            ])->withInput($request->only('email'));
+            ])->onlyInput('email');
         }
 
-        // Block inactive accounts with a clear message
-        if ($user->status !== 'active') {
-            return back()->withErrors([
-                'email' => 'Your account is inactive. Please contact an administrator.',
-            ])->withInput($request->only('email'));
-        }
-
-        // Log the user in (now that we know they are active)
-        Auth::login($user, $request->filled('remember'));
         $request->session()->regenerate();
 
-        $loginType = $data['login_type'] ?? 'student'; // default
+        $user = Auth::user();
 
-        // Enforce role based on selected login tab
-        if ($loginType === 'admin' && $user->role !== 'admin') {
+        // Optional: block clearly inactive accounts (treat NULL as active)
+        if (!empty($user->status) && $user->status !== 'active') {
             Auth::logout();
+
             return back()->withErrors([
-                'email' => 'You do not have admin access.',
-            ])->withInput($request->only('email'));
+                'email' => 'Your account is inactive. Please contact an administrator.',
+            ])->onlyInput('email');
         }
 
-        // "Student" login tab maps to role = user
-        if ($loginType === 'student' && $user->role !== 'user') {
+        // Enforce tab → role mapping
+
+        // Admin tab: only users with role "admin"
+        if ($data['login_type'] === 'admin' && $user->role !== 'admin') {
             Auth::logout();
+
             return back()->withErrors([
-                'email' => 'You must log in as a student.',
-            ])->withInput($request->only('email'));
+                'email' => 'You do not have admin access. Please use the Student login.',
+            ])->onlyInput('email');
         }
 
+        // Student tab: disallow admins here
+        if ($data['login_type'] === 'student' && $user->role === 'admin') {
+            Auth::logout();
+
+            return back()->withErrors([
+                'email' => 'Admins must use the Admin login tab.',
+            ])->onlyInput('email');
+        }
+
+        // All good: redirect based on role
         return $this->redirectBasedOnRole($user);
     }
+
+
+
 
     /**
      * Handle registration
