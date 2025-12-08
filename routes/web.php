@@ -8,6 +8,7 @@ use App\Http\Controllers\ManageItemController;
 use App\Http\Controllers\ManageUserController;
 use App\Http\Controllers\CheckAppointmentController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ForgotPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,11 @@ Route::post('/',         [LoginController::class, 'login'])->name('login.perform
 Route::post('/register', [LoginController::class, 'register'])->name('register.perform');
 Route::post('/logout',   [LoginController::class, 'logout'])->name('logout');
 
+//forgot password routes
+Route::get('forgot-password', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('forgot-password', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('reset-password', [ForgotPasswordController::class, 'reset'])->name('password.update');
 /*
 |--------------------------------------------------------------------------
 | Student & Shared Routes (require login)

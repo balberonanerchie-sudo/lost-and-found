@@ -62,8 +62,8 @@
                                 <label class="form-check-label" for="remUser"
                                     style="font-size: 0.8rem; color: #888;">Remember me</label>
                             </div>
-                            <a href="#" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;">
-                                Forgot password?
+                            <a href="{{ route('password.request') }}" style="font-size: 0.8rem; color: var(--text-muted); text-decoration: none;">Forgot password?</a>
+                                
                             </a>
                         </div>
 
