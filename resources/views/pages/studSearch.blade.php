@@ -63,7 +63,7 @@
                         <button
                             type="button"
                             class="btn btn-outline-secondary"
-                            onclick="window.location='{{ route('/search') }}'">
+                            onclick="window.location='{{ route('search') }}'">
                             Reset
                         </button>
                     </div>
@@ -131,12 +131,18 @@
             {{ $items->appends(request()->query())->links() }}
         </div>
 
-        <footer class="bg-dark text-white py-5 mt-auto w-100">
-        <div class="container text-center">
-            <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
-                <i data-lucide="compass" class="text-success"></i>
-                <span class="fw-bold fs-5">weFind</span>
-            </div>
+        <footer class="bg-dark text-white py-5 mt-auto">
+    <div class="container text-center">
+        <div class="d-flex justify-content-center align-items-center gap-2 mb-4">
+            <i data-lucide="compass" class="text-success"></i>
+            <span class="fw-bold fs-5">weFind</span>
+        </div>
+        <p class="text-white-50 small mb-0">
+            &copy; {{ date('Y') }} Lost and Found Management System. All Rights Reserved.
+        </p>
+    </div>
+</footer>
+@endsection
 
 
 @section('scripts')

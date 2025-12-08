@@ -85,10 +85,6 @@
                 Approved
                 <span class="badge bg-success text-white ms-2 rounded-pill">{{ $approvedCount }}</span>
             </button>
-            <button class="tab-btn" data-tab="calendar">
-                <i class="fas fa-calendar-alt"></i>
-                Calendar
-            </button>
         </div>
     </div>
 
@@ -290,17 +286,6 @@
                 </tbody>
 
             </table>
-        </div>
-    </div>
-
-    <div class="table-card tab-content" id="calendar">
-        <div class="table-header">
-            <h5>Appointment Calendar</h5>
-        </div>
-        <div class="card-body p-0"> 
-            <div style="padding: 1rem; min-height: 85vh;">
-                <calendar-widget></calendar-widget>
-            </div>
         </div>
     </div>
 
